@@ -40,7 +40,8 @@ main(int argc, char *argv[])
   struct input_file files[argc-1];
   int               nfiles = 0;
   int               nopen;
-  int               i, ret;
+  int               i;
+  struct pcap_file  out;
 
   if (1 == argc) return usage(0);
 
@@ -58,8 +59,7 @@ main(int argc, char *argv[])
       return EX_NOINPUT;
     }
 
-    ret = pcap_open_in(&cur->p, f);
-    if (-1 == ret) {
+    if (-1 == pcap_open_in(&cur->p, f)) {
       fprintf(stderr, "%s: unable to process\n", fn);
       return EX_IOERR;
     }
@@ -70,14 +70,12 @@ main(int argc, char *argv[])
     }
   }
 
-  ret = pcap_write_header(stdout);
-  if (-1 == ret) {
+  if (-1 == pcap_open_out(&out, stdout)) {
     perror("writing header");
     return EX_IOERR;
   }
 
   nopen = nfiles;
-  DUMP_d(nopen);
   while (nopen) {
     struct input_file *cur = &files[0];
     char               frame[MAXFRAME];

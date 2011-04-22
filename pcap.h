@@ -57,10 +57,10 @@ struct pcap_pkthdr {
 #define DUMP_c(v) DUMPf("%s = %c", #v, v)
 #define DUMP_p(v) DUMPf("%s = %p", #v, v)
 
-int pcap_read_header(FILE *f);
-int pcap_write_header(FILE *f);
 int pcap_open_in(struct pcap_file *ctx, FILE *f);
+int pcap_open_out(struct pcap_file *ctx, FILE *f);
 int pcap_read_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr);
+int pcap_write_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr);
 void pcap_close(struct pcap_file *ctx);
 
 #endif /* __PCAP_H__ */
