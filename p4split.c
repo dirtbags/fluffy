@@ -62,9 +62,9 @@ main(int argc, char *argv[])
     fprintf(stderr, "Warning: routing prefix is not a multiple of 8.\n");
   }
 
-  mask = ~((1 << (32 - bits)) - 1);
+  mask = ~((1 << (32-bits)) - 1);
   addr &= mask;
-  shr = bits - 8;
+  shr = (32-bits) - 8; 
 
   for (i = 0; i < 256; i += 1) {
     out[i].f = NULL;
@@ -109,7 +109,7 @@ main(int argc, char *argv[])
       char fn[9];
       FILE *f;
 
-      sfprintf(stderr, fn, "%03d.pcap", octet);
+      sprintf(fn, "%03d.pcap", octet);
 
       if (NULL == (f = fopen(fn, "wb"))) break;
       if (-1 == pcap_open_out(&out[octet], f)) break;
