@@ -16,7 +16,7 @@
 int
 usage(int ret)
 {
-  fprintf(stderr, "Usage: pip4split CIDR\n");
+  fprintf(stderr, "Usage: p4split CIDR\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Splits pcap on stdin into up to 256 files, based on CIDR.\n");
   return ret;
