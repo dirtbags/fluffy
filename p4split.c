@@ -109,7 +109,7 @@ main(int argc, char *argv[])
       char fn[9];
       FILE *f;
 
-      sprintf(fn, "%03d.pcap", octet);
+      sprintf(fn, "%d.pcap", octet);
 
       if (NULL == (f = fopen(fn, "wb"))) break;
       if (-1 == pcap_open_out(&out[octet], f)) break;
