@@ -1,5 +1,5 @@
 CFLAGS = -Wall -Werror
-TARGETS = pmerge puniq p4split
+TARGETS = pmerge puniq p4split hd
 
 all: $(TARGETS)
 
