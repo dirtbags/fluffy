@@ -46,6 +46,8 @@ dump(FILE *f)
       }
       p += 16;
       continue;
+    } else {
+      skipping = 0;
     }
 
     printf("%08lx  ", (long unsigned int)p);
