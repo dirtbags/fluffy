@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdint.h>
 #include <sysexits.h>
 #include <string.h>
 #include "pcap.h"
