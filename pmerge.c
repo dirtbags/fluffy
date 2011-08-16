@@ -12,9 +12,9 @@ struct input_file {
 int
 usage(int ret)
 {
-  printf("Usage: pmerge FILE ...\n");
-  printf("\n");
-  printf("Merges pcap files, outputting time-ordered pcap stream\n");
+  fprintf(stderr, "Usage: pmerge FILE ...\n");
+  fprintf(stderr, "\n");
+  fprintf(stderr, "Merges pcap files, outputting time-ordered pcap stream\n");
   return ret;
 }
 
@@ -93,7 +93,7 @@ main(int argc, char *argv[])
 
     /* Make sure it'll fit */
     if (cur->next.caplen > sizeof(frame)) {
-      fprintf(stderr, "error: huge frame (size %u)\n", len);
+      fprintf(stderr, "error: huge frame (size %u)\n", (unsigned int)len);
       return EX_SOFTWARE;
     }
 

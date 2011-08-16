@@ -54,6 +54,8 @@ pcap_read_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr)
     hdr->len        = bswap32(hdr->len);
   }
 
+  if (hdr->caplen > MAXFRAME) return -1;
+
   return 0;
 }
 
