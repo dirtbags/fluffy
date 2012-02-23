@@ -1,0 +1,33 @@
+0.1337 The Middle
+
+ * In learning GNU autotools, the build cruft is now using libtool and creating
+   a 'convenience' library out of pcap.c, which is used by the PCAP utils.
+
+ * Added PCAP utilities from Zephyr's fluffy project. These utilities are small
+   and fast. Instead of trying to cook up the proper command-line for tcpdump or
+   tshark, one can use these simple utilities to slice, merge, and uniq PCAP
+   files in the UNIX tradition. Additional time was spent to meet design goals
+   as described below.
+
+ * Modified all utilities to have a common command line interface with at least
+   '-h' (usage/help) and '-v' (version).  My design goals are:
+   - use a standard means of processing command line arguments (getopt)
+   - have a solid main() that abstracts all notion of command line and arguments
+     away from the main action of each utility
+   - use a standard build toolkit (GNU autotools)
+
+ * Zephyr's coding style is a bit different than mine, so I spent some time
+   revising his code so that it aligns with my style (and maybe to be a jerk :)
+
+ * hdng, a derivative of Zephyr's hd.c, was added. The idea was to maintain the
+   excellent way hd.c chooses alternative glyphs so that the user may be more
+   able to visually detect patterns in binary, while providing more options (all
+   hex, all glyphs, and choosing the width of data to display on each line.
+
+ * repr, named pyesc by Zephyr, was added in its renamed form.
+
+ * Added utilities xor and unhex by Zephyr.
+
+0.0 The Beginning
+
+the collection was empty and void
