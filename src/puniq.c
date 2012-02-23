@@ -1,63 +1,117 @@
+/*                    _
+ *  _ __  _   _ _ __ (_) __ _
+ * | '_ \| | | | '_ \| |/ _` |
+ * | |_) | |_| | | | | | (_| |
+ * | .__/ \__,_|_| |_|_|\__, |
+ * |_|                     |_|
+ *
+ * filter one to many PCAPs for unique frames
+ *
+ */
+
+#include <getopt.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <sysexits.h>
 #include <string.h>
+#include "netre.h"
 #include "pcap.h"
 
-int
-main(int argc, char *argv[])
-{
-  int                i;
-  struct pcap_pkthdr hdr[2];
-  char               frame[2][MAXFRAME];
-  int                cur = 0;
-  struct pcap_file   out;
+int version(bool error) {
+    fprintf(WHICHOUT(error), "puniq v.%s - %s\n\n", PACKAGE_VERSION,
+            "filter one to many PCAPs for unique frames");
+    return error ? EX_USAGE : EX_OK;
+}
 
-  memset(&hdr, 0, sizeof(hdr));
-  memset(frame, 0, 2 * MAXFRAME);
+int usage(bool error, char *prog) {
+    int retval = version(error);
+    fprintf(WHICHOUT(error), "Usage: %s [-o OUTPUT] <FILE> [FILE]*\n", prog);
+    fprintf(WHICHOUT(error), "\t-o OUTPUT\tfile in which to write output; if not specified, output will be written to stdout\n");
+    fprintf(WHICHOUT(error), "\tFILE\tinput pcap file, at least one file is required\n");
+    return retval;
+}
 
-  if (-1 == pcap_open_out(&out, stdout)) {
-    perror("writing header");
-    return EX_IOERR;
-  }
+int puniq(FILE *output, char *inputs[], int ninputs) {
+    int                i;
+    struct pcap_pkthdr hdr[2];
+    char               frame[2][MAXFRAME];
+    struct pcap_file   out;
+    int                cur;
 
-  i = 1;
-  do {
-    char             *fn = argv[i];
-    FILE             *f;
-    struct pcap_file  p;
-
-    if ((! fn) || (0 == strcmp("-", fn))) {
-      f = stdin;
-    } else {
-      f = fopen(fn, "rb");
-      if (NULL == f) {
-        perror(fn);
+    if (pcap_open_out(&out, output) == -1) {
+        perror("writing header");
         return EX_IOERR;
-      }
     }
 
-    if (-1 == pcap_open_in(&p, f)) {
-      fprintf(stderr, "%s: unable to process\n", fn);
-      return EX_IOERR;
+    for (i = 0; i < ninputs; i++) {
+        char             *fn = inputs[i];
+        FILE             *f;
+        struct pcap_file  p;
+
+        if ((! fn) || (strcmp("-", fn) == 0)) {
+            f = stdin;
+        } else {
+            printf("processing: %s\n", fn);
+            f = fopen(fn, "rb");
+            if (NULL == f) {
+                perror(fn);
+                return EX_IOERR;
+            }
+        }
+
+        if (pcap_open_in(&p, f) == -1) {
+            fprintf(stderr, "unable to process: %s\n", fn);
+            return EX_IOERR;
+        }
+
+        cur = 0;
+        while (true) {
+
+            memset(&hdr[cur], 0, sizeof(hdr[cur]));
+            memset(&frame[cur], 0, MAXFRAME);
+
+            if (pcap_read_pkthdr(&p, &hdr[cur])             == -1) break;
+            if (fread(frame[cur], hdr[cur].caplen, 1, p.f)  !=  1) break;
+            if ((memcmp(&hdr[0], &hdr[1], sizeof(hdr[cur])) ==  0)  &&
+               (memcmp(frame[0], frame[1], hdr[cur].caplen) ==  0)) {
+                /* Skip this duplicate */
+                DDUMP("duplicate!");
+            } else {
+                if (pcap_write_pkthdr(&out, &hdr[cur]) == -1) break;
+                if (fwrite(frame[cur], hdr[cur].caplen, 1, out.f) != 1) break;
+            }
+
+            cur = (1 - cur);
+        }
+
+        pcap_close(&p);
+    }
+    pcap_close(&out);
+
+    return EX_OK;
+}
+
+int main (int argc, char *argv[]) {
+    int opt;
+    FILE *output = stdout;
+
+    while ((opt = getopt(argc, argv, "hvo:")) != -1) {
+        switch (opt) {
+            case 'o': /* output file */
+                output = fopen(optarg, "wb");
+                if (!output) {
+                    perror("opening output");
+                    return EX_OSFILE;
+                }
+                break;
+            case 'v': return version(false);
+            case 'h': return usage(false, argv[0]);
+            default:  return usage(true,  argv[0]);
+        }
     }
 
-    while (1) {
-      if (-1 == pcap_read_pkthdr(&p, &hdr[cur])) break;
-      if (1 != fread(frame[cur], hdr[cur].caplen, 1, p.f)) break;
+    /* at least one file is required */
+    if (argc <= optind) return usage(true, argv[0]);
 
-      if ((0 == memcmp(&hdr[0], &hdr[1], sizeof(hdr[0]))) &&
-          (0 == memcmp(frame[0], frame[1], hdr[cur].caplen))) {
-        /* Skip this duplicate */
-      } else {
-        if (-1 == pcap_write_pkthdr(&out, &hdr[cur])) break;
-        if (1 != fwrite(frame[cur], hdr[cur].caplen, 1, out.f)) break;
-      }
-      cur = (1 - cur);
-    }
-    pcap_close(&p);
-
-    i += 1;
-  } while (i < argc);
-
-  return 0;
+    return puniq(output, &argv[optind], argc - optind);
 }
