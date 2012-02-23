@@ -1,0 +1,77 @@
+.TH "hdng" "1"
+.SH "NAME"
+hdng \(em a hex dumper for the next generation\)
+.SH "SYNOPSIS"
+.PP
+\fBhdng\fR [ [\-oxsg] [\-w width] | [\-X] | [\-G] ] [FILE] 
+.SH "DESCRIPTION"
+.PP
+The basic concept for this utility is to emulate the base
+functionality of a hex dumper as found in bsdmainutils while
+providing better representation of the data. A special character set
+is used so that one might better observe patterns in the data.
+Additionally, the three areas of the hexdump (offsets, hexits,
+glyphs) can be turned off and the width of data represented in each
+line of data can be changed.
+
+.SH "USAGE"
+.IP "With a file specified" 10
+\fBhdng\fR data.bin
+
+.IP "As a filter" 10
+ ... | \fBhdng\fR | ...
+
+.SH "OPTIONS"
+.PP
+A summary of the options supported by \fBhdng\fR is included below.
+
+.IP "\-o" 10
+The optional \fI\-o\fP flag tells hdng to turn off offsets and
+to not display the byte count at the end of execution
+.IP "\-x" 10
+The optional \fI\-x\fP flag tells hdng to turn off the display
+of hexits
+.IP "\-s" 10
+The optional \fI\-s\fP flag tells hdng to not abbreviate
+rendundant data
+.IP "\-g" 10
+The optional \fI\-g\fP flag tells hdng to turn off the display
+of glyphs
+.IP "\-w width" 10
+The optional \fI\-w\fP \fIwidth\fP flag tells
+hdng the width of data to represent on each line of
+output
+.IP "\-X" 10
+The \fI\-X\fP flag turns on continuous
+\fIhexdump\fP mode, which overrides all
+other options
+.IP "\-G" 10
+The \fI\-G\fP flag turns on continuous
+\fIglyphdump\fP mode, which overrides all
+other options
+.IP "FILE" 10
+The file to be dumped
+
+.SH "REQUIRES"
+.PP
+n/a
+
+.SH "VERSION"
+.PP
+0.1337
+
+.SH "BUGS"
+.PP
+n/a
+
+.SH "SEE ALSO"
+.PP
+n/a
+
+.SH "AUTHORS"
+.PP
+Zephyr zephyr@dirtbags.net
+.PP
+pi-rho pi-rho@tyr.cx
+.PP
+This man-page was written by pi-rho ubuntu@tyr.cx

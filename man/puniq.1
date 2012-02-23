@@ -1,0 +1,52 @@
+.TH "puniq" "1"
+.SH "NAME"
+puniq \(em filter one to many PCAP files for unique frames
+.SH "SYNOPSIS"
+.PP
+\fBpuniq\fR [\-o OUTPUT] <FILE> [FILE]*
+.SH "DESCRIPTION"
+.PP
+The basic concept for this utility is to filter one to many PCAP files for
+unique frames
+
+.SH "USAGE"
+.IP "As a filter" 10
+\fBpuniq\fR one.pcap two.pcap > unique.pcap
+
+.IP "In simple command form" 10
+\fBpuniq\fR \-o unique.pcap one.pcap two.pcap
+
+.SH "OPTIONS"
+.PP
+A summary of the options supported by \fBpuniq\fR is included below.
+
+.IP "\-o OUTPUT" 10
+The \fB\-o\fR command flag sets the output filename. If this option flag is not
+specified, stdout is used to output the merged PCAP.
+
+.IP "FILE" 10
+At least one input file argument is required.
+
+.SH "REQUIRES"
+.PP
+n/a
+
+.SH "VERSION"
+.PP
+0.1337
+
+.SH "BUGS"
+.PP
+n/a
+
+.SH "SEE ALSO"
+.PP
+n/a
+
+.SH "AUTHORS"
+.PP
+Zephyr zephyr@dirtbags.net
+.PP
+pi-rho pi-rho@tyr.cx
+.PP
+This man-page was written by pi-rho ubuntu@tyr.cx

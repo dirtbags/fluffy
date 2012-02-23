@@ -1,0 +1,53 @@
+.TH "p4split" "1"
+.SH "NAME"
+p4split \(em split a PCAP based on CIDR
+.SH "SYNOPSIS"
+.PP
+\fBp4split\fR [\-i INPUT] <CIDR>
+
+.SH "DESCRIPTION"
+.PP
+The basic concept for this utility is to filter and split a PCAP packet capture
+file into smaller files. This utility will create up to 256 smaller files.
+
+.SH "USAGE"
+.IP "As a filter" 10
+ ... | \fBp4split\fR 192.168.1.0/24
+
+.IP "Command mode" 10
+\fBp4split\fR \-i big.pcap 192.168.1.0/24
+
+.SH "OPTIONS"
+.PP
+A summary of the options supported by \fBp4split\fR is included below.
+
+.IP "\-i INPUT" 10
+When the \fB\-i\fR argument is specified, \fBINPUT\fR is used as input, instead
+of stdin
+
+.IP "CIDR" 10
+A network address in CIDR notation (ad.dre.ss/subnet-bits)
+
+.SH "REQUIRES"
+.PP
+n/a
+
+.SH "VERSION"
+.PP
+0.1337
+
+.SH "BUGS"
+.PP
+n/a
+
+.SH "SEE ALSO"
+.PP
+n/a
+
+.SH "AUTHORS"
+.PP
+Zephyr zephyr@dirtbags.net
+.PP
+pi-rho pi-rho@tyr.cx
+.PP
+This man-page was written by pi-rho ubuntu@tyr.cx
