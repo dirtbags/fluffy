@@ -1,53 +1,66 @@
-.TH "p4split" "1"
-.SH "NAME"
-p4split \(em split a PCAP based on CIDR
-.SH "SYNOPSIS"
-.PP
-\fBp4split\fR [\-i INPUT] <CIDR>
-
-.SH "DESCRIPTION"
-.PP
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd March 3, 2012
+.Dt P4SPLIT 1
+.Os "network reverse engineering tools"
+.Sh NAME
+.Nm p4split
+.Nd split a PCAP based on CIDR filter
+.
+.Sh SYNOPSIS
+.Nm p4split
+.Oo Fl h | Fl v Oc
+.Nm p4split
+.Op Fl i Pa input.pcap
+.Ao CIDR filter Ac
+.
+.Sh DESCRIPTION
 The basic concept for this utility is to filter and split a PCAP packet capture
 file into smaller files. This utility will create up to 256 smaller files.
-
-.SH "USAGE"
-.IP "As a filter" 10
- ... | \fBp4split\fR 192.168.1.0/24
-
-.IP "Command mode" 10
-\fBp4split\fR \-i big.pcap 192.168.1.0/24
-
-.SH "OPTIONS"
-.PP
-A summary of the options supported by \fBp4split\fR is included below.
-
-.IP "\-i INPUT" 10
-When the \fB\-i\fR argument is specified, \fBINPUT\fR is used as input, instead
-of stdin
-
-.IP "CIDR" 10
-A network address in CIDR notation (ad.dre.ss/subnet-bits)
-
-.SH "REQUIRES"
-.PP
-n/a
-
-.SH "VERSION"
-.PP
-0.1337
-
-.SH "BUGS"
-.PP
-n/a
-
-.SH "SEE ALSO"
-.PP
-n/a
-
-.SH "AUTHORS"
-.PP
-Zephyr zephyr@dirtbags.net
-.PP
-pi-rho pi-rho@tyr.cx
-.PP
-This man-page was written by pi-rho ubuntu@tyr.cx
+.
+.Sh USAGE
+As a filter
+.D1 ... | Nm p4split 192.168.1.0/24
+.Pp
+Command mode
+.D1 Nm p4split Fl i Pa big.pcap Ad 192.168.1.0/24
+.
+.Sh OPTIONS
+A summary of the options supported by
+.Nm
+is included below.
+.Bl -tag -width Ds
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl i Pa input.pcap
+.Pa input.pcap
+is used as input, instead of stdin
+.It Ao CIDR filter Ac
+A filter in CIDR notation (ad.dre.ss/subnet-bits)
+.El
+.
+.Sh SEE ALSO
+.Xr pmerge 1 ,
+.Xr puniq 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx

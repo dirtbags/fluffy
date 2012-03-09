@@ -1,52 +1,72 @@
-.TH "puniq" "1"
-.SH "NAME"
-puniq \(em filter one to many PCAP files for unique frames
-.SH "SYNOPSIS"
-.PP
-\fBpuniq\fR [\-o OUTPUT] <FILE> [FILE]*
-.SH "DESCRIPTION"
-.PP
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd March 3, 2012
+.Dt PUNIQ 1
+.Os "network reverse engineering tools"
+.Sh NAME
+.Nm puniq
+.Nd filter one to many PCAP files for unique frames
+.
+.Sh SYNOPSIS
+.Nm puniq
+.Op Fl h | Fl v
+.Nm puniq
+.Op Fl o Ar output.pcap
+.Pa input.pcap
+.Op Ar
+.
+.Sh DESCRIPTION
 The basic concept for this utility is to filter one to many PCAP files for
 unique frames
-
-.SH "USAGE"
-.IP "As a filter" 10
-\fBpuniq\fR one.pcap two.pcap > unique.pcap
-
-.IP "In simple command form" 10
-\fBpuniq\fR \-o unique.pcap one.pcap two.pcap
-
-.SH "OPTIONS"
-.PP
-A summary of the options supported by \fBpuniq\fR is included below.
-
-.IP "\-o OUTPUT" 10
-The \fB\-o\fR command flag sets the output filename. If this option flag is not
-specified, stdout is used to output the merged PCAP.
-
-.IP "FILE" 10
-At least one input file argument is required.
-
-.SH "REQUIRES"
-.PP
-n/a
-
-.SH "VERSION"
-.PP
-0.1337
-
-.SH "BUGS"
-.PP
-n/a
-
-.SH "SEE ALSO"
-.PP
-n/a
-
-.SH "AUTHORS"
-.PP
-Zephyr zephyr@dirtbags.net
-.PP
-pi-rho pi-rho@tyr.cx
-.PP
-This man-page was written by pi-rho ubuntu@tyr.cx
+.
+.Sh USAGE
+As a filter
+.D1 Nm puniq Pa one.pcap Pa two.pcap Li > Pa unique.pcap
+.Pp
+In simple command form
+.D1 Nm puniq Fl o Pa unique.pcap Pa one.pcap Pa two.pcap
+.
+.Sh OPTIONS
+A summary of the options supported by
+.Nm puniq
+is included below.
+.
+.Bl -tag -width Ds
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl o Ar output.pcap
+sets the output filename to
+.Pa output.pcap .
+If this option flag is not specified,
+.Dv stdout
+is used to output the merged PCAP
+.It Pa input.pcap
+At least one input file argument is required
+.It Ar
+additional input files may be specified
+.
+.Sh SEE ALSO
+.Xr p4split 1 ,
+.Xr pmerge 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx

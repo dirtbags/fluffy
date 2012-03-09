@@ -1,50 +1,69 @@
-.TH "xor" "1"
-.SH "NAME"
-xor \(em apply mask bytes to a stream using XOR
-.SH "SYNOPSIS"
-.PP
-\fBxor\fR [\-x] <MASK>*
-.SH "DESCRIPTION"
-.PP
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd March 3, 2012
+.Dt XOR 1
+.Os "network reverse engineering tools"
+.
+.Sh NAME
+.Nm xor
+.Nd apply mask bytes to a stream using XOR
+.
+.Sh SYNOPSIS
+.Nm xor
+.Op Fl h | Fl v
+.Nm xor
+.Op Fl x
+.Ar MASKBYTE
+.Op Ar MASKBYTES ...
+.
+.Sh DESCRIPTION
 The basic concept for this utility is to apply a set of mask bytes, repeatedly,
 to a stream of input. The application of the mask bytes is accomplished using
 the bitwise XOR operation.
-
-.SH "USAGE"
-.IP "As a filter" 10
- ... | \fBxor\fR \-x 20 2f | ...
-
-.SH "OPTIONS"
-.PP
-A summary of the options supported by \fBxor\fR is included below.
-
-.IP "\-x" 10
-The optional \fI\-x\fP flag tells xor that mask bytes are specified in
-hexadecimal notation
-
-.IP "MASK" 10
-This represents a list of mask bytes to apply to the input stream. Bytes should
-be listed in decimal, unless the optional \fI\-x\fR flag is
-given.
-
-.SH "REQUIRES"
-.PP
-n/a
-
-.SH "VERSION"
-.PP
-0.1337
-
-.SH "BUGS"
-.PP
-n/a
-
-.SH "SEE ALSO"
-.PP
-n/a
-
-.SH "AUTHORS"
-.PP
-Zephyr zephyr@dirtbags.net
-.PP
-This man-page was written by pi-rho ubuntu@tyr.cx
+.
+.Sh USAGE
+As a filter with the hexadecimal mask bytes
+.Bq 20 , 2f
+applied to the input stream (i.e.
+.Bq 20 , 2f , 20 , 2f , ...  Ns )
+.D1 ... | Nm xor Fl x Ar 20 Ar 2f | Li ...
+.
+.Sh OPTIONS
+A summary of the options supported by
+.Nm xor
+is included below.
+.
+.Bl -tag -width Ds
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl x
+explicity interpret mask bytes as hexadecimal digits
+.It Ar MASKBYTE Op Ar MASKBYTES ...
+a list of mask bytes to apply to the input stream
+.El
+.
+.Sh SEE ALSO
+.Xr hdng 1 ,
+.Xr unhex 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx

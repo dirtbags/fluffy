@@ -1,77 +1,99 @@
-.TH "hdng" "1"
-.SH "NAME"
-hdng \(em a hex dumper for the next generation\)
-.SH "SYNOPSIS"
-.PP
-\fBhdng\fR [ [\-oxsg] [\-w width] | [\-X] | [\-G] ] [FILE] 
-.SH "DESCRIPTION"
-.PP
-The basic concept for this utility is to emulate the base
-functionality of a hex dumper as found in bsdmainutils while
-providing better representation of the data. A special character set
-is used so that one might better observe patterns in the data.
-Additionally, the three areas of the hexdump (offsets, hexits,
-glyphs) can be turned off and the width of data represented in each
-line of data can be changed.
-
-.SH "USAGE"
-.IP "With a file specified" 10
-\fBhdng\fR data.bin
-
-.IP "As a filter" 10
- ... | \fBhdng\fR | ...
-
-.SH "OPTIONS"
-.PP
-A summary of the options supported by \fBhdng\fR is included below.
-
-.IP "\-o" 10
-The optional \fI\-o\fP flag tells hdng to turn off offsets and
-to not display the byte count at the end of execution
-.IP "\-x" 10
-The optional \fI\-x\fP flag tells hdng to turn off the display
-of hexits
-.IP "\-s" 10
-The optional \fI\-s\fP flag tells hdng to not abbreviate
-rendundant data
-.IP "\-g" 10
-The optional \fI\-g\fP flag tells hdng to turn off the display
-of glyphs
-.IP "\-w width" 10
-The optional \fI\-w\fP \fIwidth\fP flag tells
-hdng the width of data to represent on each line of
-output
-.IP "\-X" 10
-The \fI\-X\fP flag turns on continuous
-\fIhexdump\fP mode, which overrides all
-other options
-.IP "\-G" 10
-The \fI\-G\fP flag turns on continuous
-\fIglyphdump\fP mode, which overrides all
-other options
-.IP "FILE" 10
-The file to be dumped
-
-.SH "REQUIRES"
-.PP
-n/a
-
-.SH "VERSION"
-.PP
-0.1337
-
-.SH "BUGS"
-.PP
-n/a
-
-.SH "SEE ALSO"
-.PP
-n/a
-
-.SH "AUTHORS"
-.PP
-Zephyr zephyr@dirtbags.net
-.PP
-pi-rho pi-rho@tyr.cx
-.PP
-This man-page was written by pi-rho ubuntu@tyr.cx
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd March 3, 2012
+.Dt HDNG 1
+.Os "network reverse engineering tools"
+.Sh NAME
+.Nm hdng
+.Nd a hex dumper for the next generation
+.
+.Sh SYNOPSIS
+.Nm hdng
+.Oo Fl h | Fl v Oc
+.Nm hdng
+.Op Fl oxsg
+.Op Fl w Ar width
+.Op Ar file
+.Nm hdng
+.Op Fl X | Fl G
+.Op Ar file
+.
+.Sh DESCRIPTION
+The basic concept for this utility is to emulate the base functionality of a hex
+dumper as found in bsdmainutils while providing better representation of the
+data. A special character set is used so that one might better observe patterns
+in the data. Additionally, the three areas of the hexdump (offsets, hexits,
+glyphs) can be turned off and the width of data represented in each line of data
+can be changed.
+.
+.Sh USAGE
+With a file specified
+.D1 Nm hdng Pa data.bin
+.Pp
+As a filter
+.D1 ... | Nm hdng | ...
+.
+.Sh OPTIONS
+A summary of the options supported by
+.Nm
+is included below.
+.Bl -tag -width -Ds
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl o
+do not display offsets, including the total byte count
+.It Fl x
+do not display hexits
+.It Fl s
+do not abbreviate redundant data
+.It Fl g
+do not display glyphs
+.It Fl w Ar width
+the
+.Em width
+of data to represent on each line of output
+.It Ar file
+the file to be dumped
+.El
+.
+.Ss Special Modes
+The following flags are mutually exclusive. When specified,
+.Nm
+ignores all other flags.
+.Bl -tag -width Ds
+.It Fl X
+turns on continuous
+.Em hexdump
+mode, which overrides all other options
+.It Fl G
+turns on continuous
+.Em glyphdump
+mode, which overrides all other options
+.El
+.
+.Sh SEE ALSO
+.Xr unhex 1 ,
+.Xr repr 1 ,
+.Xr xor 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx
