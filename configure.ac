@@ -12,6 +12,9 @@ AM_MAINTAINER_MODE
 AM_SILENT_RULES([yes])
 AC_SUBST([VERSION])
 
+# stop CFLAGS duplication
+: ${CFLAGS=""}
+
 # Find programs...
 AC_PROG_CC
 AM_PROG_CC_C_O
@@ -33,15 +36,22 @@ AC_TYPE_UINT8_T
 # Checks for library functions.
 AC_CHECK_FUNCS([memset strncasecmp strtol])
 
+# Is this gcc?
+AM_CONDITIONAL([IS_GCC], [test "x$GCC" = xyes])
+
 # debug stuff
 AC_ARG_ENABLE([debug],
 	AS_HELP_STRING([--enable-debug], [Enable debug statements]),
-	[enable_debug=yes],
-	[enable_debug=no])
-
-AS_IF([test "x$enable_debug" == "xyes"],
-	AC_DEFINE([DEBUGSTMTS], [1], [enable debugging statements]),
-	[])
+	[enable_debug=yes;AM_DEFAULT_VERBOSITY=1], [enable_debug=no])
+AM_CONDITIONAL([IS_DEBUG], [test "x$enable_debug" == xyes])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
+
+echo
+echo "$PACKAGE v$VERSION"
+echo
+
+echo "Debug enabled : $enable_debug"
+echo "Prefix ...... : $prefix"
+echo
