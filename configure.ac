@@ -7,7 +7,7 @@ AC_CONFIG_SRCDIR([src/hdng.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.11 gnu check-news silent-rules subdir-objects -Wall -Werror])
+AM_INIT_AUTOMAKE([1.11 gnu check-news silent-rules subdir-objects no-dist-gzip dist-xz -Wall -Werror])
 AM_MAINTAINER_MODE
 AM_SILENT_RULES([yes])
 AC_SUBST([VERSION])

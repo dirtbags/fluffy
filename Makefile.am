@@ -5,7 +5,7 @@ dist_man1_MANS = man/hdng.mdoc man/unhex.mdoc man/xor.mdoc man/repr.mdoc \
 				 man/puniq.mdoc man/pmerge.mdoc man/p4split.mdoc
 dist_man7_MANS = man/netre-tools.mdoc
 MANPAGES = $(dist_man1_MANS) $(dist_man7_MANS)
-PDFPAGES = ${MANPAGES:.mdoc=.pdf}
+PDFPAGES = $(MANPAGES:man/%.mdoc=docs/%.pdf)
 
 AM_CFLAGS =
 AM_CPPFLAGS =
@@ -41,6 +41,8 @@ pmerge_LDADD       = libpcap.la
 p4split_SOURCES    = src/p4split.c
 p4split_LDADD      = libpcap.la
 
+EXTRA_DIST         = man docs
+
 MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/compile \
                        build-aux/config.guess build-aux/config.sub \
                        build-aux/depcomp build-aux/install-sh build-aux/missing \
@@ -51,14 +53,24 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/compile \
 docdir = $(datadir)/doc/@PACKAGE@
 doc_DATA = README AUTHORS TODO $(PDFPAGES)
 
-SUFFIXES = .mdoc .pdf
+MDOC2PS  = groff -mdoc -t -Tps
+PS2PDF   = ps2pdf -
 
-.mdoc.pdf:
-	groff -mdoc -t -Tps $< | ps2pdf - - >$@
+docs:
+	mkdir -p man
+	mkdir -p docs
+	for i in $(MANPAGES:man/%.mdoc=%); do \
+		$(MDOC2PS) $(srcdir)/man/$$i.mdoc | $(PS2PDF) $(srcdir)/docs/$$i.pdf; \
+	done
+
+$(PDFPAGES): docs
 
 maintainer-clean-local:
 	rmdir build-aux
 	rmdir m4
+	-rmdir docs
+
+dist-hook: docs
 
 install-exec-hook:
 	(cd $(DESTDIR)$(bindir);      \
@@ -74,3 +86,7 @@ install-data-hook:
 	mv -f $(DESTDIR)$(docdir)/xor.pdf \
 		$(DESTDIR)$(docdir)/transformer.pdf
 
+uninstall-hook:
+	rm $(DESTDIR)$(bindir)/{rot,rol,caesar}
+	rm $(DESTDIR)$(man1dir)/{rot,rol,caesar}.1
+	rm $(DESTDIR)$(docdir)/transformer.pdf
