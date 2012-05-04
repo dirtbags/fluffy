@@ -30,7 +30,10 @@
 .Nm xor
 .Op Fl x
 .Ar MASKBYTE
-.Op Ar MASKBYTES ...
+.Op Ar MASKBYTE ...
+.Nm xor
+.Fl s
+.Ar MASKSTRING
 .
 .Sh DESCRIPTION
 The basic concept for this utility is to apply a set of mask bytes, repeatedly,
@@ -43,6 +46,8 @@ As a filter with the hexadecimal mask bytes
 applied to the input stream (i.e.
 .Bq 20 , 2f , 20 , 2f , ...  Ns )
 .D1 ... | Nm xor Fl x Ar 20 Ar 2f | Li ...
+As a filter with a string of characters used as a mask
+.D1 ... | Nm xor Fl s Qo Ar " key " Qc | Li ...
 .
 .Sh OPTIONS
 A summary of the options supported by
@@ -56,8 +61,12 @@ usage information
 the program's version
 .It Fl x
 explicity interpret mask bytes as hexadecimal digits
-.It Ar MASKBYTE Op Ar MASKBYTES ...
+.It Fl s
+use a string of characters as the mask
+.It Ar MASKBYTE Op Ar MASKBYTE ...
 a list of mask bytes to apply to the input stream
+.It Ar MASKSTRING
+a string of characters
 .El
 .
 .Sh SEE ALSO
