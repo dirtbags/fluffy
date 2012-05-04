@@ -5,4 +5,4 @@
 autoreconf --install --force
 rm -rf autom4te.cache
 
-./configure --enable-maintainer-mode --enable-debug
+[ "x$1" == "x--dailydeb" ] || ./configure --enable-maintainer-mode --enable-debug
