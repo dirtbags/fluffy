@@ -10,6 +10,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.11 gnu check-news silent-rules subdir-objects -Wall -Werror])
 AM_MAINTAINER_MODE
 AM_SILENT_RULES([yes])
+AC_SUBST([VERSION])
 
 # Find programs...
 AC_PROG_CC
@@ -30,7 +31,7 @@ AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
-AC_CHECK_FUNCS([memset strtol])
+AC_CHECK_FUNCS([memset strncasecmp strtol])
 
 # debug stuff
 AC_ARG_ENABLE([debug],

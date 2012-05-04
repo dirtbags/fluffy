@@ -1,4 +1,17 @@
 0.1337 The Middle
+ * Added PDF document creation (groff -> ps2pdf)
+
+ * Added additional functionality to xor. This tool will be installed with
+   several names to change its core action, while retaining its overall
+   functionality. Currently, the following actions have been included:
+   - xor
+   - rot (bitwise rotate)
+   - rol (bytewise rotate)
+   - caesar (Caesar's cipher)
+
+ * Added a summary man page (netre-tools.mdoc). This man page will be a sort of
+   menu for users to find all of the tools included in the toolkit. Suggested
+   by cashmoney.
 
  * In learning GNU autotools, the build cruft is now using libtool and creating
    a 'convenience' library out of pcap.c, which is used by the PCAP utils.

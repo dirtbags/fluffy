@@ -17,41 +17,34 @@
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
 .Dd March 3, 2012
-.Dt XOR 1
-.Os "network reverse engineering tools"
-.
+.Dt PUNIQ 1
+.Os "Network Reverse Engineering Toolkit"
 .Sh NAME
-.Nm xor
-.Nd apply mask bytes to a stream using XOR
+.Nm puniq
+.Nd filter one to many PCAP files for unique frames
 .
 .Sh SYNOPSIS
-.Nm xor
+.Nm puniq
 .Op Fl h | Fl v
-.Nm xor
-.Op Fl x
-.Ar MASKBYTE
-.Op Ar MASKBYTE ...
-.Nm xor
-.Fl s
-.Ar MASKSTRING
+.Nm puniq
+.Op Fl o Ar output.pcap
+.Pa input.pcap
+.Op Ar
 .
 .Sh DESCRIPTION
-The basic concept for this utility is to apply a set of mask bytes, repeatedly,
-to a stream of input. The application of the mask bytes is accomplished using
-the bitwise XOR operation.
+The basic concept for this utility is to filter one to many PCAP files for
+unique frames
 .
 .Sh USAGE
-As a filter with the hexadecimal mask bytes
-.Bq 20 , 2f
-applied to the input stream (i.e.
-.Bq 20 , 2f , 20 , 2f , ...  Ns )
-.D1 ... | Nm xor Fl x Ar 20 Ar 2f | Li ...
-As a filter with a string of characters used as a mask
-.D1 ... | Nm xor Fl s Qo Ar " key " Qc | Li ...
+As a filter
+.D1 Nm puniq Pa one.pcap Pa two.pcap Li > Pa unique.pcap
+.Pp
+In simple command form
+.D1 Nm puniq Fl o Pa unique.pcap Pa one.pcap Pa two.pcap
 .
 .Sh OPTIONS
 A summary of the options supported by
-.Nm xor
+.Nm puniq
 is included below.
 .
 .Bl -tag -width Ds
@@ -59,19 +52,20 @@ is included below.
 usage information
 .It Fl v
 the program's version
-.It Fl x
-explicity interpret mask bytes as hexadecimal digits
-.It Fl s
-use a string of characters as the mask
-.It Ar MASKBYTE Op Ar MASKBYTE ...
-a list of mask bytes to apply to the input stream
-.It Ar MASKSTRING
-a string of characters
-.El
+.It Fl o Ar output.pcap
+sets the output filename to
+.Pa output.pcap .
+If this option flag is not specified,
+.Dv stdout
+is used to output the merged PCAP
+.It Pa input.pcap
+At least one input file argument is required
+.It Ar
+additional input files may be specified
 .
 .Sh SEE ALSO
-.Xr hdng 1 ,
-.Xr unhex 1
+.Xr p4split 1 ,
+.Xr pmerge 1
 .
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,

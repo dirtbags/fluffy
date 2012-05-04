@@ -1,0 +1,109 @@
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd May 1, 2012
+.Dt TRANSFORMER 1
+.Os "Network Reverse Engineering Toolkit"
+.
+.Sh NAME
+.Nm xor
+.Nd apply bytes to the pipeline using XOR
+.br
+.Nm rot
+.Nd apply bytes to the pipeline using ROT
+.br
+.Nm rol
+.Nd apply bytes to the pipeline using ROL
+.br
+.Nm caesar
+.Nd apply bytes to the pipeline using Caesar's Cipher
+.
+.Sh SYNOPSIS
+.Nm <transform>
+.Op Fl h | Fl v
+.Nm <transform>
+.Op Fl u
+.Op Fl x
+.Ar BYTE
+.Op Ar BYTE ...
+.Nm <transform>
+.Op Fl u
+.Fl s
+.Ar STRING
+.
+.Sh DESCRIPTION
+The basic concept for this utility is to apply a set of bytes, repeatedly, to a
+stream of input.
+.
+.Sh USAGE
+As a filter with the hexadecimal bytes
+.Bq 0x20 , 0x2f
+applied to the input stream using
+.Nm xor .
+The bytes are applied repeatedly until the end-of-file (i.e.
+.Bq 0x20 , 0x2f , 0x20 , 0x2f , ...  Ns ) .
+.D1 ... | Nm xor Fl x Ar 20 Ar 2f | Li ...
+.Pp
+As a filter with a string of characters used as a byte source (i.e.
+.Bq 0x20 , 0x6b , 0x65 , 0x79 , 0x20 , ... Ns ) .
+.D1 ... | Nm xor Fl s Qo Ar " key " Qc | Li ...
+.
+.Sh OPTIONS
+A summary of the options is included below.
+.
+.Bl -tag -width Ds
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl x
+explicity interpret bytes as hexadecimal digits
+.It Fl s Ar STRING
+use a string of characters as the byte source
+.It Fl u
+undo - reverse the transform (this is ignored for
+.Nm xor )
+.It Ar BYTE Op Ar BYTE ...
+a list of bytes to apply to the input stream
+.El
+.
+.Sh IMPLEMENTATION NOTES
+The application of the bytes is accomplished using one of the following
+transforms:
+.
+.Bd -unfilled -offset indent
+.TS
+box tab(:);
+l | l | l | l.
+\fBTransform:Description:Bytes:Undo\fR
+_:_:_:_
+xor:bitwise exclusive OR:integers [0-255]:-
+rot:bitwise rotate left:integers [0-7]:bitwise rotate right
+rol:bytewise rotate (-):integers [0-255]:bytewise rotate (+)
+caesar:alphabet shift (+):integers [0-26]:alphabet shift (-)
+.TE
+.Ed
+.Pp
+.
+.Sh SEE ALSO
+.Xr hdng 1 ,
+.Xr unhex 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx

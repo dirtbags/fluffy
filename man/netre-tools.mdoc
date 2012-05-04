@@ -1,0 +1,85 @@
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd May 1, 2012
+.Dt NETRE-TOOLS 7
+.Os "Network Reverse Engineering Toolkit"
+.Sh NAME
+.Nm netre-tools
+.Nd network reverse engineering toolkit
+.
+.Sh DESCRIPTION
+Network reverse engineering describes an emerging specialty in the information
+assurance industry. This specialty exists in the gray area between malware
+reverse engineering and network forensics. Analysts in this specialty may process
+a wide variety of data. This data may be encrypted, encoded, or embedded in
+multiple layers of other data.
+.Pp
+This toolkit aims to provide simple utilities to aide the analyst in carving
+through many potential layers in order to find information. This toolkit will
+most likely never be a complete solution; however, the authors aim to fill in
+the gaps left by more complex tools.
+.
+.Sh IMPLEMENTATION NOTES
+The following tools are currently included in the toolkit:
+.Ss Data Inspection and Manipulation
+This subgroup aids in inspecting data and manipulating data.
+.Pp
+.Bl -tag -width caesar -compact
+.It Nm hdng
+Hex Dumper - Next Generation (also symbolically linked as
+.Nm hd )
+.It Nm unhex
+converts hexits to binary data (i.e. "61 62" \(rA "AB")
+.It Nm xor
+applies bytes to the pipeline using XOR
+.It Nm rot
+applies bytes to the pipeline using ROT (bitwise rotation)
+.It Nm rol
+applies bytes to the pipeline using ROL (bytewise rotation)
+.It Nm caesar
+applies bytes to the pipeline using Caesar's Cipher (alphabetic rotation)
+.El
+.
+.Ss PCAP Manipulation
+This subgroup allows frames in PCAP (packet capture) files to be manipulated
+from the command line.
+.Pp
+.Bl -tag -width p4split -compact
+.It Nm p4split
+split a large PCAP file into smaller files, using a CIDR-notation filter
+.It Nm pmerge
+join PCAP files into a larger file while preserving date/time order
+.It Nm puniq
+drop duplicated packets from a PCAP
+.El
+.
+.Sh SEE ALSO
+.Xr hdng 1 ,
+.Xr unhex 1 ,
+.Xr xor 1 ,
+.Xr rot 1 ,
+.Xr rol 1 ,
+.Xr caesar 1 ,
+.Xr p4split 1 ,
+.Xr pmerge 1 ,
+.Xr puniq 1
+.
+.Sh AUTHORS
+.An Xephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx

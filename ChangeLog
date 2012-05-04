@@ -1,3 +1,10 @@
-2012-02-12  PPA Maintainer  <pi-rho@tyr.cx>
+2012-05-01  pi-rho  <pi-rho@tyr.cx>
+
+	* Added netre-tools.7
+	* Added additional actions to xor
+	* Added additional install commands to Makefile.am
+	* Added pdf document creation based on man pages
+
+2012-02-12  pi-rho  <pi-rho@tyr.cx>
 
 	* Added utilities from the fluffy project
