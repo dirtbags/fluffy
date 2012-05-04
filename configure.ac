@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script
 
-AC_PREREQ([2.68])
+AC_PREREQ([2.65])
 
 AC_INIT([netre-tools], [0.1337], [pi-rho@tyr.cx])
 AC_CONFIG_SRCDIR([src/hdng.c])
