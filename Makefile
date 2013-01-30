@@ -1,6 +1,6 @@
 CFLAGS = -Wall -Werror
-TARGETS = pmerge puniq p4split hd
-TARGETS += pyesc printfesc pcat
+TARGETS = pmerge puniq p4split pcat 
+TARGETS += hd pyesc printfesc xor unhex 
 
 all: $(TARGETS)
 

@@ -6,8 +6,8 @@
 #include <stddef.h>
 
 struct stream {
-    char const *buf;
-    size_t len;
+	char const *buf;
+	size_t len;
 };
 
 void sinit(struct stream *s, char const *buf, size_t len);

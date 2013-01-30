@@ -7,100 +7,87 @@
 void
 sinit(struct stream *s, char const *buf, size_t buflen)
 {
-    s->buf = buf;
-    s->len = buflen;
+	s->buf = buf;
+	s->len = buflen;
 }
 
 bool
 sskip(struct stream *s, size_t count)
 {
-    if (count > s->len) {
-        s->len = 0;
-        return false;
-    }
+	if (count > s->len) {
+		s->len = 0;
+		return false;
+	}
 
-    s->buf += count;
-    s->len -= count;
-    return true;
+	s->buf += count;
+	s->len -= count;
+	return true;
 }
 
 bool
-sread(struct stream *s, void *buf, size_t count)
+sread(struct stream * s, void *buf, size_t count)
 {
-    void const *d = s->buf;
+	void const *d = s->buf;
 
-    if (! sskip(s, count)) {
-	return false;
-    }
-    memcpy(buf, d, count);
+	if (!sskip(s, count)) {
+		return false;
+	}
+	memcpy(buf, d, count);
 
-    return true;
+	return true;
 }
 
 uint8_t
-read_uint8(struct stream *s)
+read_uint8(struct stream * s)
 {
-    uint8_t *d = (uint8_t *)s->buf;
+	uint8_t *d = (uint8_t *) s->buf;
 
-    if (! sskip(s, 1)) {
-        return 0;
-    }
-    return d[0];
+	if (!sskip(s, 1)) {
+		return 0;
+	}
+	return d[0];
 }
 
 uint16_t
-read_uint16be(struct stream *s)
+read_uint16be(struct stream * s)
 {
-    uint8_t *d = (uint8_t *)s->buf;
+	uint8_t *d = (uint8_t *) s->buf;
 
-    if (! sskip(s, 2)) {
-        return 0;
-    }
-    return (
-        (d[0] << 8) |
-        (d[1] << 0));
+	if (!sskip(s, 2)) {
+		return 0;
+	}
+	return ((d[0] << 8) | (d[1] << 0));
 }
 
 uint16_t
-read_uint16le(struct stream *s)
+read_uint16le(struct stream * s)
 {
-    uint8_t *d = (uint8_t *)s->buf;
+	uint8_t *d = (uint8_t *) s->buf;
 
-    if (! sskip(s, 2)) {
-        return 0;
-    }
-    return (
-        (d[0] << 0) |
-        (d[1] << 8));
+	if (!sskip(s, 2)) {
+		return 0;
+	}
+	return ((d[0] << 0) | (d[1] << 8));
 }
 
 uint32_t
-read_uint32be(struct stream *s)
+read_uint32be(struct stream * s)
 {
-    uint8_t *d = (uint8_t *)s->buf;
+	uint8_t *d = (uint8_t *) s->buf;
 
-    if (! sskip(s, 4)) {
-        return 0;
-    }
-    return (
-        (d[0] << 24) |
-        (d[1] << 16) |
-        (d[2] << 8)  |
-        (d[3] << 0));
+	if (!sskip(s, 4)) {
+		return 0;
+	}
+	return ((d[0] << 24) | (d[1] << 16) | (d[2] << 8) | (d[3] << 0));
 }
 
 uint32_t
-read_uint32le(struct stream *s)
+read_uint32le(struct stream * s)
 {
-    uint8_t *d = (uint8_t *)s->buf;
+	uint8_t *d = (uint8_t *) s->buf;
 
-    if (! sskip(s, 4)) {
-        return 0;
-    }
-    return (
-        (d[0] << 0) |
-        (d[1] << 8) |
-        (d[2] << 16)  |
-        (d[3] << 24));
+	if (!sskip(s, 4)) {
+		return 0;
+	}
+	return ((d[0] << 0) | (d[1] << 8) | (d[2] << 16) | (d[3] << 24));
 }
-
