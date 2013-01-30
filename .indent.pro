@@ -1,0 +1,6 @@
+--original
+--indent-level 8
+--line-length 132
+--declaration-indentation 1
+--case-indentation 8
+--honour-newlines
