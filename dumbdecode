@@ -1,0 +1,16 @@
+#! /bin/sh
+
+# Emulate dumbdecode.py from python netarch
+
+# The advantage here is, after the pcat step, you're dealing with text files.
+# * cache the output of pcat to speed things up a little.
+# * tail -n +5000 to ignore the first 5000 lines of your cache.
+# * grep the cache, use sed, awk, whatever
+
+./pmerge "$@" | ./pcat | while read ts proto src dst payload; do
+	#when=$(TZ=Z date --rfc-3339=ns -d @$ts)
+	printf "Packet %s None: None\n" $proto
+	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$ts"
+	echo $payload | ./unhex | ./hd
+	echo
+done

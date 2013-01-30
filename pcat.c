@@ -44,7 +44,7 @@ process_tcp(struct stream *s, char *saddr_s, char *daddr_s)
 		printf("!");
 	}
 
-	printf("TCP4 %s:%u %s:%u ", saddr_s, sport, daddr_s, dport);
+	printf("TCP4 %s,%u,%u %s,%u,%u ", saddr_s, sport, seq, daddr_s, dport, ack);
 
 	// shut the compiler up
 	if (false && urgent && chksum && window && flags && ack && seq && false);
@@ -58,7 +58,7 @@ process_udp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint16_t len = read_uint16be(s);
 	uint16_t chksum = read_uint16be(s);
 
-	printf("UDP4 %s:%u %s:%u ", saddr_s, sport, daddr_s, dport);
+	printf("UDP4 %s,%u %s,%u ", saddr_s, sport, daddr_s, dport);
 
 	// Now, do some shit!
 	if (false && len && chksum && false);
@@ -143,7 +143,7 @@ print_frame(struct pcap_pkthdr *hdr, char const *frame)
 	struct stream *s = &streambuf;
 
 	sinit(s, frame, hdr->caplen);
-	printf("%u,%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
+	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
 	print_ethernet(s);
 	printf("\n");
 }
