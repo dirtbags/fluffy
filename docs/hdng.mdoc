@@ -16,19 +16,19 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd March 3, 2012
+.Dd May 23, 2012
 .Dt HDNG 1
-.Os "network reverse engineering toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
 .Sh NAME
 .Nm hdng
 .Nd a hex dumper for the next generation
 .
 .Sh SYNOPSIS
 .Nm hdng
-.Oo Fl h | Fl v Oc
+.Op Fl h | Fl v
 .Nm hdng
-.Op Fl oxsg
-.Op Fl w Ar width
+.Op Fl o x s g w Ar width
 .Op Ar file
 .Nm hdng
 .Op Fl X | Fl G
@@ -36,24 +36,16 @@
 .
 .Sh DESCRIPTION
 The basic concept for this utility is to emulate the base functionality of a hex
-dumper as found in bsdmainutils while providing better representation of the
-data. A special character set is used so that one might better observe patterns
-in the data. Additionally, the three areas of the hexdump (offsets, hexits,
-glyphs) can be turned off and the width of data represented in each line of data
-can be changed.
-.
-.Sh USAGE
-With a file specified
-.D1 Nm hdng Pa data.bin
+dumper as found in bsdmainutil's
+.Xr hexdump 1
+while providing better representation of the data. A special character set is
+used so that one might better observe patterns in the data. Additionally,
+the three areas of the hexdump (offsets, hexits, glyphs) can be turned off
+and the width of data represented in each line of data can be changed.
 .Pp
-As a filter
-.D1 ... | Nm hdng | ...
-.
-.Sh OPTIONS
-A summary of the options supported by
-.Nm
-is included below.
-.Bl -tag -width -Ds
+The available options include:
+.Pp
+.Bl -tag -compact -width Ds
 .It Fl h
 usage information
 .It Fl v
@@ -70,30 +62,41 @@ do not display glyphs
 the
 .Em width
 of data to represent on each line of output
-.It Ar file
-the file to be dumped
 .El
 .
 .Ss Special Modes
 The following flags are mutually exclusive. When specified,
 .Nm
 ignores all other flags.
-.Bl -tag -width Ds
+.Pp
+.Bl -tag -compact -width Ds
 .It Fl X
 turns on continuous
 .Em hexdump
-mode, which overrides all other options
+mode
 .It Fl G
 turns on continuous
 .Em glyphdump
-mode, which overrides all other options
+mode
 .El
 .
+.Sh EXAMPLES
+With a file specified
+.D1 Ic $ Nm hdng Pa data.bin
+.Pp
+As a filter
+.D1 Ic $ No ... | Nm hdng | No ...
+.
 .Sh SEE ALSO
-.Xr unhex 1 ,
+.Xr hexdump 1 ,
 .Xr repr 1 ,
+.Xr unhex 1 ,
 .Xr xor 1
 .
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools

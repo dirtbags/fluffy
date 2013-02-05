@@ -16,9 +16,10 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd May 1, 2012
+.Dd May 23, 2012
 .Dt NETRE-TOOLS 7
-.Os "Network Reverse Engineering Toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
 .Sh NAME
 .Nm netre-tools
 .Nd network reverse engineering toolkit
@@ -37,49 +38,67 @@ the gaps left by more complex tools.
 .
 .Sh IMPLEMENTATION NOTES
 The following tools are currently included in the toolkit:
+.
 .Ss Data Inspection and Manipulation
 This subgroup aids in inspecting data and manipulating data.
 .Pp
 .Bl -tag -width caesar -compact
-.It Nm hdng
-Hex Dumper - Next Generation (also symbolically linked as
-.Nm hd )
-.It Nm unhex
-converts hexits to binary data (i.e. "61 62" \(rA "AB")
-.It Nm xor
-applies bytes to the pipeline using XOR
-.It Nm rot
-applies bytes to the pipeline using ROT (bitwise rotation)
-.It Nm rol
-applies bytes to the pipeline using ROL (bytewise rotation)
 .It Nm caesar
 applies bytes to the pipeline using Caesar's Cipher (alphabetic rotation)
+.It Nm hdng
+Hex Dumper - Next Generation
+.Pq also symbolically linked as Nm hd
+.It Nm repr
+escapes non-printable characters like Python's
+.Fn repr
+.Pq i.e. Li 0x03 becomes Li \ex03
+.It Nm rol
+applies bytes to the pipeline using ROL (bytewise rotation)
+.It Nm rot
+applies bytes to the pipeline using ROT (bitwise rotation)
+.It Nm unhex
+converts hexits to binary data
+.Pq i.e. Qo Li 61 62 Qc becomes Qo Li AB Qc
+.It Nm xor
+applies bytes to the pipeline using XOR
 .El
 .
-.Ss PCAP Manipulation
+.Ss Packet Capture Manipulation
 This subgroup allows frames in PCAP (packet capture) files to be manipulated
 from the command line.
 .Pp
-.Bl -tag -width p4split -compact
-.It Nm p4split
-split a large PCAP file into smaller files, using a CIDR-notation filter
+.Bl -tag -width dumbdecode -compact
+.It Nm pcat
+dump a packet capture in a line-based, parsable format
 .It Nm pmerge
 join PCAP files into a larger file while preserving date/time order
 .It Nm puniq
 drop duplicated packets from a PCAP
+.It Nm p4split
+split a large PCAP file into smaller files, using a CIDR-notation filter
+.It Nm dumbdecode
+dump packet captures in a nice text-based display
 .El
 .
 .Sh SEE ALSO
-.Xr hdng 1 ,
-.Xr unhex 1 ,
-.Xr xor 1 ,
-.Xr rot 1 ,
-.Xr rol 1 ,
 .Xr caesar 1 ,
+.Xr dumbdecode 1 ,
+.Xr hdng 1 ,
 .Xr p4split 1 ,
+.Xr pcat 1 ,
 .Xr pmerge 1 ,
-.Xr puniq 1
+.Xr puniq 1 ,
+.Xr repr 1 ,
+.Xr rol 1 ,
+.Xr rot 1 ,
+.Xr unhex 1 ,
+.Xr xor 1
 .
 .Sh AUTHORS
 .An Xephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools
+.\" vim:ft=mandoc:

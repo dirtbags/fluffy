@@ -16,9 +16,10 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd March 3, 2012
+.Dd May 23, 2012
 .Dt P4SPLIT 1
-.Os "Network Reverse Engineering Toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
 .Sh NAME
 .Nm p4split
 .Nd split a PCAP based on CIDR filter
@@ -33,34 +34,37 @@
 .Sh DESCRIPTION
 The basic concept for this utility is to filter and split a PCAP packet capture
 file into smaller files. This utility will create up to 256 smaller files.
-.
-.Sh USAGE
-As a filter
-.D1 ... | Nm p4split 192.168.1.0/24
 .Pp
-Command mode
-.D1 Nm p4split Fl i Pa big.pcap Ad 192.168.1.0/24
-.
-.Sh OPTIONS
-A summary of the options supported by
-.Nm
-is included below.
-.Bl -tag -width Ds
+The available options include:
+.Pp
+.Bl -tag -compact -width "-i input.pcap"
 .It Fl h
 usage information
 .It Fl v
 the program's version
 .It Fl i Pa input.pcap
-.Pa input.pcap
-is used as input, instead of stdin
-.It Ao CIDR filter Ac
-A filter in CIDR notation (ad.dre.ss/subnet-bits)
+.Pa input.pcap No is used as input, instead of stdin
+.It Aq CIDR filter
+A filter in CIDR notation
+.Pq a.dd.re.ss/subnet-bits
 .El
 .
+.Sh EXAMPLES
+As a filter:
+.D1 Ic $ No ... | Nm p4split Ar 192.168.1.0/24
+.Pp
+With an input file specified:
+.D1 Ic $ Nm p4split Fl i Pa big.pcap Ad 192.168.1.0/24
+.
 .Sh SEE ALSO
+.Xr pcat 1 ,
 .Xr pmerge 1 ,
 .Xr puniq 1
 .
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools

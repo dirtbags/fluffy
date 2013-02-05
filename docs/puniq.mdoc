@@ -16,9 +16,10 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd March 3, 2012
+.Dd May 23, 2012
 .Dt PUNIQ 1
-.Os "Network Reverse Engineering Toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
 .Sh NAME
 .Nm puniq
 .Nd filter one to many PCAP files for unique frames
@@ -27,42 +28,36 @@
 .Nm puniq
 .Op Fl h | Fl v
 .Nm puniq
-.Op Fl o Ar output.pcap
+.Op Fl o Pa output.pcap
 .Pa input.pcap
-.Op Ar
+.Op Ar ...
 .
 .Sh DESCRIPTION
 The basic concept for this utility is to filter one to many PCAP files for
 unique frames
-.
-.Sh USAGE
-As a filter
-.D1 Nm puniq Pa one.pcap Pa two.pcap Li > Pa unique.pcap
 .Pp
-In simple command form
-.D1 Nm puniq Fl o Pa unique.pcap Pa one.pcap Pa two.pcap
-.
-.Sh OPTIONS
-A summary of the options supported by
-.Nm puniq
-is included below.
-.
-.Bl -tag -width Ds
+The available options include:
+.Pp
+.Bl -tag -compact -width "input.pcap [...]"
 .It Fl h
 usage information
 .It Fl v
 the program's version
 .It Fl o Ar output.pcap
 sets the output filename to
-.Pa output.pcap .
-If this option flag is not specified,
+.Pa output.pcap . No If this option flag is not specified, the merged PCAP is
+ouput to
 .Dv stdout
-is used to output the merged PCAP
-.It Pa input.pcap
+.It Pa input.pcap Op Ar ...
 At least one input file argument is required
-.It Ar
-additional input files may be specified
 .El
+.
+.Sh EXAMPLES
+As a filter
+.D1 Ic $ Nm puniq Pa one.pcap Pa two.pcap Li > Pa unique.pcap
+.Pp
+In simple command form
+.D1 Ic $ Nm puniq Fl o Pa unique.pcap Pa one.pcap Pa two.pcap
 .
 .Sh SEE ALSO
 .Xr p4split 1 ,
@@ -71,3 +66,7 @@ additional input files may be specified
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools

@@ -16,9 +16,9 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd March 3, 2012
+.Dd May 23, 2012
 .Dt REPR 1
-.Os "Network Reverse Engineering Toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
 .
 .Sh NAME
 .Nm repr
@@ -31,28 +31,25 @@
 .Op Ar
 .
 .Sh DESCRIPTION
-The basic concept for this utility is to emulate python's repr() function. Input
-bytes are escaped using Python's byte notation if they do not fall within the
-printable range.
-.
-.Sh USAGE
-With a file specified
-.D1 Nm repr Pa data.bin
+The basic concept for this utility is to emulate Python's
+.Fn repr No function. Input bytes are escaped using Python's byte notation if
+they do not fall within the printable range.
 .Pp
-As a filter
-.D1 ... | Nm repr | ...
-.
-.Sh OPTIONS
-A summary of the options supported by
-.Nm repr
-is included below.
-.
-.Bl -tag -width Ds
+The available options include:
+.Pp
+.Bl -tag -compact -width Ds
 .It Fl h
 usage information
 .It Fl v
 the program's version
 .El
+.
+.Sh EXAMPLES
+With a file specified:
+.D1 Ic $ Nm repr Pa data.bin
+.Pp
+As a filter:
+.D1 Ic $ No ... | Nm repr | No ...
 .
 .Sh SEE ALSO
 .Xr hdng 1 ,
@@ -61,3 +58,7 @@ the program's version
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools

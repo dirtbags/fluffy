@@ -16,9 +16,9 @@
 .\" On Debian systems, the complete text of the GNU General
 .\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
 .
-.Dd May 1, 2012
+.Dd May 23, 2012
 .Dt TRANSFORMER 1
-.Os "Network Reverse Engineering Toolkit"
+.Os "Network Reverse Engineering Toolkit" 1.1337
 .
 .Sh NAME
 .Nm xor
@@ -40,7 +40,7 @@
 .Op Fl u
 .Op Fl x
 .Ar BYTE
-.Op Ar BYTE ...
+.Op Ar ...
 .Nm <transform>
 .Op Fl u
 .Fl s
@@ -49,24 +49,10 @@
 .Sh DESCRIPTION
 The basic concept for this utility is to apply a set of bytes, repeatedly, to a
 stream of input.
-.
-.Sh USAGE
-As a filter with the hexadecimal bytes
-.Bq 0x20 , 0x2f
-applied to the input stream using
-.Nm xor .
-The bytes are applied repeatedly until the end-of-file (i.e.
-.Bq 0x20 , 0x2f , 0x20 , 0x2f , ...  Ns ) .
-.D1 ... | Nm xor Fl x Ar 20 Ar 2f | Li ...
 .Pp
-As a filter with a string of characters used as a byte source (i.e.
-.Bq 0x20 , 0x6b , 0x65 , 0x79 , 0x20 , ... Ns ) .
-.D1 ... | Nm xor Fl s Qo Ar " key " Qc | Li ...
-.
-.Sh OPTIONS
-A summary of the options is included below.
-.
-.Bl -tag -width Ds
+The available options include:
+.Pp
+.Bl -tag -compact -width "-s STRING"
 .It Fl h
 usage information
 .It Fl v
@@ -76,29 +62,41 @@ explicity interpret bytes as hexadecimal digits
 .It Fl s Ar STRING
 use a string of characters as the byte source
 .It Fl u
-undo - reverse the transform (this is ignored for
-.Nm xor )
-.It Ar BYTE Op Ar BYTE ...
+undo - reverse the transform
+.Pq this is ignored for Nm xor
+.It Ar BYTE Op Ar ...
 a list of bytes to apply to the input stream
 .El
 .
 .Sh IMPLEMENTATION NOTES
-The application of the bytes is accomplished using one of the following
+The application of the key bytes is accomplished using one of the following
 transforms:
 .
-.Bd -unfilled -offset indent
+.Bd -unfilled -offset left
 .TS
 box tab(:);
-l | l | l | l.
-\fBTransform:Description:Bytes:Undo\fR
-_:_:_:_
-xor:bitwise exclusive OR:integers [0-255]:-
-rot:bitwise rotate left:integers [0-7]:bitwise rotate right
-rol:bytewise rotate (-):integers [0-255]:bytewise rotate (+)
-caesar:alphabet shift (+):integers [0-26]:alphabet shift (-)
+l | l | l | l | l.
+\fBName:Description:Subj:Argument:Undo\fR
+_:_:_:_:_
+xor:bitwise exclusive OR:bytes:int [0-255]:N/A
+rot:rotate left:bits:int [0-7]:rotate right
+rol:rotate (-):bytes:int [0-255]:rotate (+)
+caesar:shift (+):alpha:int [0-26]:shift (-)
 .TE
 .Ed
+.
+.Sh EXAMPLES
+As a filter with the hexadecimal bytes
+.Bq 0x20 , 0x2f
+applied to the input stream using
+.Nm xor .
+The bytes are applied repeatedly until the end-of-file
+.Pq i.e. Bo 0x20 , 0x2f , 0x20 , 0x2f , ...  Bc .
+.D1 Ic $ No ... | Nm xor Fl x Ar 20 Ar 2f | No ...
 .Pp
+As a filter with a string of characters used as a byte source
+.Pq i.e. Qo key Qc becomes Bo 0x6b , 0x65 , 0x79 , ... Bc .
+.D1 Ic $ No ... | Nm xor Fl s Qo Ar key Qc | No ...
 .
 .Sh SEE ALSO
 .Xr hdng 1 ,
@@ -107,3 +105,7 @@ caesar:alphabet shift (+):integers [0-26]:alphabet shift (-)
 .Sh AUTHORS
 .An Zephyr Aq Ad zephyr@dirtbags.net ,
 .An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools
