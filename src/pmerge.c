@@ -24,6 +24,12 @@ struct input_file {
     struct pcap_pkthdr next;
 };
 
+struct linklayer {
+    uint16_t           src[3];
+    uint16_t           dest[3];
+    uint16_t           ethertype;
+};
+
 int version(bool error) {
     fprintf(WHICHOUT(error), "pmerge v.%s - %s\n\n", PACKAGE_VERSION,
             "Merges pcap files, outputting time-ordered pcap stream");
@@ -41,7 +47,7 @@ int usage(bool error, char *prog) {
 int read_next(struct input_file *file) {
     if (! file->active) return -1;
 
-    if (-1 == pcap_read_pkthdr(&file->p, &file->next)) {
+    if (pcap_read_pkthdr(&file->p, &file->next) == -1) {
         pcap_close(&file->p);
         file->active = 0;
         file->next.ts.tv_sec = 0xffffffff;
@@ -56,6 +62,7 @@ int pmerge(FILE *output, struct input_file files[], int nfiles) {
     int               nopen;
     int               i;
     struct pcap_file  out;
+    struct linklayer  fake = {{0,0,0}, {1,1,1}, 0x0008};
 
     if (pcap_open_out(&out, output) == -1) {
         perror("writing pcap header");
@@ -95,9 +102,19 @@ int pmerge(FILE *output, struct input_file files[], int nfiles) {
 
         /* Write header + frame */
         if (len) {
+            if (cur->p.raw) {
+                cur->next.caplen += sizeof(fake);
+                cur->next.len += sizeof(fake);
+            }
             if (fwrite(&cur->next, sizeof(cur->next), 1, output) != 1) {
                 perror("error");
                 return EX_IOERR;
+            }
+            if (cur->p.raw) {
+                if (fwrite(&fake, sizeof(fake), 1, output) != 1) {
+                    perror("error");
+                    return EX_IOERR;
+                }
             }
             if (len != fwrite(frame, 1, len, output)) {
                 perror("error");
@@ -150,6 +167,7 @@ int main(int argc, char *argv[]) {
             return EX_NOINPUT;
         }
 
+        /* prime the input files */
         if (pcap_open_in(&cur->p, f) == -1) {
             fprintf(stderr, "%s: unable to process\n", fn);
             return EX_IOERR;
