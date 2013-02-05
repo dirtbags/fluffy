@@ -1,0 +1,41 @@
+#!/bin/bash
+usage() {
+	version
+	echo ""
+	echo "Usage: dumbdecode [-h] [-v]"
+	echo "       dumbdecode [-w 16] PCAP [PCAP ...]"
+	echo ""
+	echo "	-w	data width of the packet hex dump (default: 16)"
+	echo "	PCAP	one to many packet capture files (libpcap 2.4)"
+	echo ""
+}
+version() {
+	echo "dumbdecode v.1.1337 - The Dumb Decoder"
+}
+
+width=16
+
+while getopts ":hvw:" opt; do
+	case $opt in
+		h) usage; exit 0;;
+		v) version; exit 0;;
+		w)
+			if [[ ${OPTARG} -gt 0 && ${OPTARG} -le 64 ]]; then
+				width=${OPTARG}
+			else
+				echo "Invalid width ${OPTARG}"; usage; exit 1
+			fi;;
+		?) echo "Invalid option -${OPTARG}"; usage; exit 1;;
+	esac
+done
+shift $((OPTIND-1))
+
+if [[ $# == 0 ]]; then usage; fi
+
+pmerge "$@" | puniq - | pcat | while read ts proto src dst payload; do
+	when=$(date --utc --rfc-3339=ns -d "@$ts") src=${src%,*} dst=${dst%,*}
+	printf "Packet %s None: None\n" $proto
+	printf "    %s -> %s (%s)\n" ${src/,/:} ${dst/,/:} "${when/\+00:00/Z}"
+	echo $payload | unhex | hdng -w ${width}
+	echo
+done

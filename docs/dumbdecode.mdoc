@@ -1,0 +1,88 @@
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd May 23, 2012
+.Dt DUMBDECODE 1
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
+.Sh NAME
+.Nm dumbdecode
+.Nd dump packets in a text-based format
+.
+.Sh SYNOPSIS
+.Nm dumbdecode
+.Op Fl h | Fl v
+.Nm dumbdecode
+.Op Fl w Ar WIDTH
+.Op Pa input.pcap
+.Op Ar ...
+.
+.Sh DESCRIPTION
+This script combines several of the NetRE Toolkit utilites in order to produce a
+text-based, packet display from one to many PCAP files.
+.Nm pmerge
+is used to merge PCAP files, while keeping the packets in order.
+.Nm puniq
+is used to drop any duplicate packets.
+.Nm pcat
+is used to produce a line-based, parsable output from the merged packet captures.
+Finally, along with several bash builtins and GNU/Linux utilites,
+.Nm unhex
+produces binary from the hexadecimal payload, and
+.Nm hdng
+produces a variable-width hex dump for each packet's payload.
+.Pp
+The available options include:
+.Pp
+.Bl -tag -compact -width "-o output.txt"
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl w Ar WIDTH
+width of the payload hexdump (multiples of 8 are encouraged)
+.It Ar input.pcap Ar ...
+the packet capture(s) to display
+.El
+.
+.Sh EXAMPLES
+.Ic $ Nm dumbdecode Pa one.pcap Pa two.pcap
+.Bd -literal
+Packet ICMP4 None: None
+    192.168.10.127:8 -> 192.168.10.101 (2009-03-11 15:14:53.759078000Z)
+00000000  02 00 37 00 41 42 43 44  45 46 47 48 49 4a 4b 4c  ┆☻·7·ABCDEFGHIJKL┆
+00000010  4d 4e 4f 50 51 52 53 54  55 56 57 41 42 43 44 45  ┆MNOPQRSTUVWABCDE┆
+00000020  46 47 48 49                                       ┆FGHI✘✘✘✘✘✘✘✘✘✘✘✘┆
+00000024 bytes
+.Ed
+.
+.Sh SEE ALSO
+.Xr pcat 1 ,
+.Xr pmerge 1 ,
+.Xr puniq 1 ,
+.Xr unhex 1 ,
+.Xr hdng 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools
+.\" vim:ft=mandoc
