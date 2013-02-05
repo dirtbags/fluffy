@@ -6,15 +6,18 @@ man1dir = $(prefix)/share/man/man1
 man7dir = $(prefix)/share/man/man7
 docdir = $(prefix)/share/doc/netre-tools
 
-mansrc = ../man
+mansrc = ../docs
 
-TARGETS = pmerge puniq p4split hdng xor unhex repr
+TARGETS = pmerge puniq p4split hdng xor unhex repr pcat dumbdecode
 
 all: config.h $(TARGETS)
 
-pmerge: pmerge.o pcap.o
-puniq: puniq.o pcap.o
+pmerge: pmerge.c pcap.o
+puniq: puniq.c pcap.o
 p4split: p4split.c pcap.o
+pcat: pcat.c stream.o pcap.o
+dumbdecode:
+	cp ../scripts/dumbdecode $(CURDIR)
 
 CC = gcc
 CFLAGS = -g -O2 -std=c99

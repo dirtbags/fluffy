@@ -7,7 +7,6 @@ dist_man1_MANS   = docs/hdng.mdoc docs/unhex.mdoc docs/xor.mdoc docs/repr.mdoc \
                    docs/pcat.mdoc docs/dumbdecode.mdoc
 dist_man7_MANS   = docs/netre-tools.mdoc
 MANPAGES = $(dist_man1_MANS) $(dist_man7_MANS)
-PDFPAGES = $(MANPAGES:%.mdoc=%.pdf)
 
 AM_CFLAGS =
 AM_CPPFLAGS =
@@ -51,43 +50,15 @@ MAINTAINERCLEANFILES = Makefile.in aclocal.m4 build-aux/compile                 
                        build-aux/depcomp build-aux/install-sh build-aux/missing \
                        config.h.in config.h.in~ configure build-aux/ltmain.sh   \
                        m4/libtool.m4 m4/lt~obsolete.m4 m4/ltoptions.m4          \
-                       m4/ltsugar.m4 m4/ltversion.m4 $(PDFPAGES)
+                       m4/ltsugar.m4 m4/ltversion.m4
 
-CLEANFILES           = $(MANPAGES) $(PDFPAGES) scripts/dumbdecode
-EXTRA_DIST           = $(MANPAGES) $(PDFPAGES)
+EXTRA_DIST           = $(MANPAGES)
 
 
 docdir = $(datadir)/doc/@PACKAGE@
-doc_DATA = README AUTHORS TODO $(PDFPAGES)
+doc_DATA = README AUTHORS TODO
 
-MDOC2PS  = groff -mdoc -t -Tps
-PS2PDF   = ps2pdf - -
-RELEASED = May 23, 2012
-EDIT     = sed -e 's!@RELEASE_DATE\@!$(RELEASED)!g' \
-               -e 's!@VERSION\@!@VERSION@!g'
-
-docs: Makefile $(MANPAGES) $(PDFPAGES)
-
-SUFFIXES = .mdoc.in .mdoc .pdf .in
-
-scripts/dumbdecode: scripts/dumbdecode.in
-	$(AM_V_GEN)
-	$(AM_V_at)rm -f $@ $@.tmp;           \
-	cat $(srcdir)/$< | $(EDIT) > $@.tmp; \
-	mv $@.tmp $@;                        \
-	chmod 0755 $@
-
-.mdoc.pdf:
-	$(AM_V_GEN)
-	$(AM_V_at)rm -rf $@ $@.tmp;                         \
-	cat $(srcdir)/$< | $(MDOC2PS) | $(PS2PDF) > $@.tmp; \
-	mv $@.tmp $@
-
-.mdoc.in.mdoc:
-	$(AM_V_GEN)
-	$(AM_V_at)rm -f $@ $@.tmp;           \
-	cat $(srcdir)/$< | $(EDIT) > $@.tmp; \
-	mv $@.tmp $@
+docs: Makefile $(MANPAGES)
 
 maintainer-clean-local:
 	rmdir build-aux
@@ -106,10 +77,7 @@ install-data-hook:
 	    $(LN_S) xor.1 rot.1;      \
 	    $(LN_S) xor.1 rol.1;      \
 	    $(LN_S) xor.1 caesar.1;   )
-	mv -f $(DESTDIR)$(docdir)/xor.pdf \
-	    $(DESTDIR)$(docdir)/transformer.pdf
 
 uninstall-hook:
 	rm $(DESTDIR)$(bindir)/{rot,rol,caesar}
 	rm $(DESTDIR)$(man1dir)/{rot,rol,caesar}.1
-	rm $(DESTDIR)$(docdir)/transformer.pdf

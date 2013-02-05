@@ -1,3 +1,8 @@
+1.1337 Still the Middle
+ * Added pcat, a utility to dump the contents of packet capture files in a
+   line-based, parsable format
+
+
 0.1337 The Middle
  * Added PDF document creation (groff -> ps2pdf)
 
