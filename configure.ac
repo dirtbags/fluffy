@@ -2,7 +2,7 @@
 
 AC_PREREQ([2.65])
 
-AC_INIT([netre-tools], [0.1337], [pi-rho@tyr.cx])
+AC_INIT([netre-tools], [1.1337], [pi-rho@tyr.cx])
 AC_CONFIG_SRCDIR([src/hdng.c])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_AUX_DIR([build-aux])
@@ -22,7 +22,7 @@ AC_PROG_INSTALL
 LT_INIT
 
 # Check for headers
-AC_CHECK_HEADERS([arpa/inet.h netinet/in.h stdint.h stdlib.h string.h strings.h sys/socket.h])
+AC_CHECK_HEADERS([arpa/inet.h netinet/in.h stddef.h stdint.h stdlib.h string.h strings.h sys/socket.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
