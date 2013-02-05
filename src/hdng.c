@@ -1,5 +1,5 @@
 /*
- * Last Modified: Fri 17 Feb 2012 12:08:33 PM CST
+ * Last Modified: Tue 05 Feb 2013 12:50:45 PM CST
  *
  *   _   _Hex Dumper _      ____                           _   _
  *  | \ | | _____  _| |_   / ___| ___ _ __   ___ _ __ __ _| |_(_) ___  _ __
@@ -34,7 +34,8 @@ const char* charset[] = {
     "└", "┴", "┬", "├", "─", "┼", "╞", "╟", "╚", "╔", "╩", "╦", "╠", "═", "╬", "╧",
     "╨", "╤", "╥", "╙", "╘", "╒", "╓", "╫", "╪", "┘", "┌", "█", "▄", "▌", "▐", "▀",
     "α", "ß", "Γ", "π", "Σ", "σ", "µ", "τ", "Φ", "Θ", "Ω", "δ", "∞", "φ", "ε", "∩",
-    "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "ⁱ", "ⁿ", "⁽", "⁼", "⁾", "¤"
+    "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹", "ⁱ", "ⁿ", "⁽", "⁼", "⁾", "¤",
+    "✘"
 };
 
 int version(bool error) {
@@ -57,25 +58,36 @@ int usage(bool error, char *prog) {
     return retval;
 }
 
-void print_hexits(uint8_t buf[], size_t length, bool continuous) {
-    size_t i;
+void print_hexits(uint8_t buf[], size_t length, uint8_t width, bool nl) {
+    size_t i, j;
 
     for (i = 0; i < length; i += 1) {
         printf("%02x ", buf[i]);
-        if (continuous && ((i+1) % 8 == 0)) printf(" ");
+        if (nl && ((i+1) % 8 == 0)) printf(" ");
     }
-    if (continuous) printf(" ");
+    if (nl) {
+        if (length != width) { // short row
+            j = (width - length) * 3 + (width / 8) - (length / 8);
+            for (; j > 0; j--) printf(" ");
+        }
+    } else {
+    }
 }
 
-void print_glyphs(uint8_t buf[], size_t length, bool decoration) {
-    size_t i;
+void print_glyphs(uint8_t buf[], size_t length, uint8_t width, bool decoration) {
+    size_t i, j;
 
     if (decoration) printf("┆");
 
     for (i = 0; i < length; i += 1)
         printf("%s", charset[buf[i]]);
 
-    if (decoration) printf("┆");
+    if (decoration) {
+        for (j = length; j < width; j++) {
+            printf("%s", charset[256]);
+        }
+        printf("┆");
+    }
 }
 
 int dump(FILE *f, uint8_t width, bool offsets, bool hex, bool glyphs, bool skip, bool nl) {
@@ -109,8 +121,8 @@ int dump(FILE *f, uint8_t width, bool offsets, bool hex, bool glyphs, bool skip,
         }
 
         if (offsets) printf("%08lx  ", (long unsigned int)op);
-        if (hex)     print_hexits(bytes, len, nl);
-        if (glyphs)  print_glyphs(bytes, len, hex);
+        if (hex)     print_hexits(bytes, len, width, nl);
+        if (glyphs)  print_glyphs(bytes, len, width, hex);
         if (nl)      printf("\n");
     }
 
