@@ -1,0 +1,107 @@
+.\" This manual is Copyright 2012 by pi-rho <ubuntu@tyr.cx>
+.\"
+.\" This program is free software: you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation, either version 3 of the License, or
+.\" (at your option) any later version.
+.\"
+.\" This package is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program. If not, see <http://www.gnu.org/licenses/>.
+.\"
+.\" On Debian systems, the complete text of the GNU General
+.\" Public License version 3 can be found in "/usr/share/common-licenses/GPL-3".
+.
+.Dd May 23, 2012
+.Dt PCAT 1
+.Os "Network Reverse Engineering Toolkit" 1.1337
+.
+.Sh NAME
+.Nm pcat
+.Nd dump a packet capture in a line-based, parsable format
+.
+.Sh SYNOPSIS
+.Nm pcat
+.Op Fl h | Fl v
+.Nm pcat
+.Op Fl o Ar output.txt
+.Op Pa input.pcap
+.
+.Sh DESCRIPTION
+The basic concept for this utility is to dump the contents of a packet capture
+in a line-based, parsable format. The general format is as follows:
+.Pp
+.D1 Sy TIMESTAMP PROTOCOL SOURCE DESTINATION PAYLOAD
+.Pp
+Each value may have attributes separated by commas.
+.Pp
+.Bl -tag -width "destination"
+.It Sy TIMESTAMP
+epoch,nanoseconds
+.It Sy PROTOCOL
+ARP, TCP4, UDP4, ICMP4, P# (where # is the IP protocol number)
+.It Sy SOURCE
+.Em ARP No \ : macaddress,ipaddress
+.br
+.Em ICMP4 : No ipaddress,type,code
+.br
+.Em TCP4 No : ipaddress,port,sequence
+.br
+.Em UDP4 No : ipaddress,port
+.br
+.Em P# No \ \ : ipaddress
+.It Sy DESTINATION
+.Em ARP No \ : macaddress,ipaddress
+.br
+.Em ICMP4 : No ipaddress
+.br
+.Em TCP4 No : ipaddress,port,ack
+.br
+.Em UDP4 No : ipaddress,port
+.br
+.Em P# No \ \ : ipaddress
+.It Sy PAYLOAD
+a hexadecimal representation of the protocol's payload, or '-' if there is no
+payload
+.El
+.Pp
+The available options include:
+.Pp
+.Bl -tag -compact -width "-o output.txt"
+.It Fl h
+usage information
+.It Fl v
+the program's version
+.It Fl o Ar output.txt
+sets the output filename to
+.Pa output.txt
+.Pq default: Dv stdout
+.It Ar input.pcap
+the packet capture to read
+.Pq default: Dv stdin
+.El
+.
+.Sh EXAMPLES
+As a filter:
+.D1 Ic $ Nm pmerge Pa one.pcap Pa two.pcap | Nm pcat > Pa output.txt
+.Pp
+In simple command form:
+.D1 Ic $ Nm pcat Fl o Pa output.txt Pa one.pcap
+.
+.Sh SEE ALSO
+.Xr p4split 1 ,
+.Xr puniq 1 ,
+.Xr pmerge 1
+.
+.Sh AUTHORS
+.An Zephyr Aq Ad zephyr@dirtbags.net ,
+.An pi-rho Aq Ad pi-rho@tyr.cx
+.
+.Sh BUGS
+Bugs may be submitted at
+.Aq Ad https://bugs.launchpad.net/netre-tools
+.\" vim:ft=mandoc
