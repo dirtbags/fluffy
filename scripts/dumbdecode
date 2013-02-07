@@ -33,7 +33,7 @@ shift $((OPTIND-1))
 if [[ $# == 0 ]]; then usage; fi
 
 pmerge "$@" | puniq - | pcat | while read ts proto src dst payload; do
-	when=$(date --utc --rfc-3339=ns -d "@$ts") src=${src%,*} dst=${dst%,*}
+	local when=$(date --utc --rfc-3339=ns -d "@$ts") src=${src%,*} dst=${dst%,*}
 	printf "Packet %s None: None\n" $proto
 	printf "    %s -> %s (%s)\n" ${src/,/:} ${dst/,/:} "${when/\+00:00/Z}"
 	echo $payload | unhex | hdng -w ${width}
