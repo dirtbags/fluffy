@@ -19,13 +19,17 @@ pcap_open_in(struct pcap_file *ctx, FILE * f)
 	} else {
 		return -1;
 	}
-	if ((h.version_major != 2) || (h.version_minor != 4))
+	if ((h.version_major != 2) || (h.version_minor != 4)) {
 		return -1;
+	}
 
-	if (ctx->swap)
+	if (ctx->swap) {
 		h.snaplen = bswap32(h.snaplen);
-	if (h.snaplen > MAXFRAME)
+	}
+	if (h.snaplen > MAXFRAME) {
 		return -1;
+	}
+	ctx->linktype = h.linktype;
 
 	ctx->f = f;
 	return 0;
@@ -36,8 +40,9 @@ pcap_open_out(struct pcap_file *ctx, FILE * f)
 {
 	struct pcap_file_header h = { MAGIC, 2, 4, 0, 0, MAXFRAME, 1 };
 
-	if (1 != fwrite(&h, sizeof(h), 1, f))
+	if (1 != fwrite(&h, sizeof(h), 1, f)) {
 		return -1;
+	}
 	ctx->f = f;
 	ctx->swap = 0;
 
@@ -58,8 +63,9 @@ pcap_read_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr)
 		hdr->len = bswap32(hdr->len);
 	}
 
-	if (hdr->caplen > MAXFRAME)
+	if (hdr->caplen > MAXFRAME) {
 		return -1;
+	}
 
 	return 0;
 }
@@ -76,11 +82,13 @@ pcap_write_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr)
 		hdr->caplen = bswap32(hdr->caplen);
 		hdr->len = bswap32(hdr->len);
 
-		if (1 != fwrite(&ohdr, sizeof(ohdr), 1, ctx->f))
+		if (1 != fwrite(&ohdr, sizeof(ohdr), 1, ctx->f)) {
 			return -1;
+		}
 	} else {
-		if (1 != fwrite(hdr, sizeof(*hdr), 1, ctx->f))
+		if (1 != fwrite(hdr, sizeof(*hdr), 1, ctx->f)) {
 			return -1;
+		}
 	}
 
 	return 0;

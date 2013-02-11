@@ -5,6 +5,8 @@
 
 #define IPPROTO_TCP 6
 #define IPPROTO_UDP 17
+#define IPPROTO_ICMP 1
+
 #define TH_FIN 0x01
 #define TH_SYN 0x02
 #define TH_RST 0x04
@@ -44,10 +46,7 @@ process_tcp(struct stream *s, char *saddr_s, char *daddr_s)
 		printf("!");
 	}
 
-	printf("TCP4 %s,%u,%u %s,%u,%u ", saddr_s, sport, seq, daddr_s, dport, ack);
-
-	// shut the compiler up
-	if (false && urgent && chksum && window && flags && ack && seq && false);
+	printf("TCP %s,%u,%u %s,%u,%u ", saddr_s, sport, seq, daddr_s, dport, ack);
 }
 
 void
@@ -58,10 +57,17 @@ process_udp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint16_t len = read_uint16be(s);
 	uint16_t chksum = read_uint16be(s);
 
-	printf("UDP4 %s,%u %s,%u ", saddr_s, sport, daddr_s, dport);
+	printf("UDP %s,%u %s,%u ", saddr_s, sport, daddr_s, dport);
+}
 
-	// Now, do some shit!
-	if (false && len && chksum && false);
+void
+process_icmp(struct stream *s, char *saddr_s, char *daddr_s)
+{
+	uint8_t type = read_uint8(s);
+	uint8_t code = read_uint8(s);
+	uint16_t checksum = read_uint16be(s);
+	
+	printf("ICMP %s %s %d ", saddr_s, daddr_s, code);
 }
 
 void
@@ -98,17 +104,15 @@ process_ip4(struct stream *s)
 		case IPPROTO_UDP:
 			process_udp(s, saddr_s, daddr_s);
 			break;
+		case IPPROTO_ICMP:
+			process_icmp(s, saddr_s, daddr_s);
+			break;
 		default:
 			printf("P%d %s %s ", proto, saddr_s, daddr_s);
 			break;
 	}
 
 	print_payload(s);
-
-	/*
-	 * Placate compiler 
-	 */
-	if (false && chksum && id && tos && ttl && off && false);
 }
 
 
@@ -137,14 +141,21 @@ print_ethernet(struct stream *s)
 }
 
 void
-print_frame(struct pcap_pkthdr *hdr, char const *frame)
+print_frame(struct pcap_file *p, struct pcap_pkthdr *hdr, char const *frame)
 {
 	struct stream streambuf;
 	struct stream *s = &streambuf;
 
 	sinit(s, frame, hdr->caplen);
 	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
-	print_ethernet(s);
+	switch (p->linktype) {
+		case LINKTYPE_ETHERNET:
+			print_ethernet(s);
+			break;
+		case LINKTYPE_RAW:
+			process_ip4(s);
+			break;
+	}
 	printf("\n");
 }
 
@@ -168,7 +179,7 @@ pcat(FILE * f)
 			break;
 		}
 
-		print_frame(&hdr, frame);
+		print_frame(&p, &hdr, frame);
 	}
 }
 

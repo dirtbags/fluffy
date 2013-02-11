@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror
+CFLAGS = -Wall -Werror -Wno-unused-variable
 TARGETS = pmerge puniq p4split pcat 
 TARGETS += hd pyesc printfesc xor unhex 
 
