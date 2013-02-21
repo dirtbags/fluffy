@@ -186,7 +186,7 @@ void process_ip4(struct stream *s, FILE *out) {
     DDUMP_d(length);
 
     // Ignore options
-    sskip(s, 20 - ihl);
+    sskip(s, ihl - 20);
 
     // Force stream length to IP payload length
     s->len = length - ihl;
