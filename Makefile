@@ -1,13 +1,20 @@
-CFLAGS = -Wall -Werror -Wno-unused-variable
+CFLAGS = -Wall -Werror
 TARGETS = pmerge puniq p4split pcat 
 TARGETS += hd pyesc printfesc xor unhex 
 
 all: $(TARGETS)
 
+%: %.go
+	go build $<
+
 pmerge: pmerge.o pcap.o
+
 puniq: puniq.o pcap.o
-p4split: p4split.c pcap.o
-pcat: pcat.c pcap.o stream.o
+
+p4split: p4split.o pcap.o
+
+pcat: pcat.o pcap.o stream.o
+pcat.o: CFLAGS += -Wno-unused-variable
 
 clean:
 	rm -f $(TARGETS) *.o

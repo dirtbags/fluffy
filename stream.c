@@ -5,10 +5,11 @@
 #include "stream.h"
 
 void
-sinit(struct stream *s, char const *buf, size_t buflen)
+sinit(struct stream *s, char const *buf, size_t buflen, enum endianness endian)
 {
 	s->buf = buf;
 	s->len = buflen;
+	s->endian = endian;
 }
 
 bool
@@ -25,7 +26,7 @@ sskip(struct stream *s, size_t count)
 }
 
 bool
-sread(struct stream * s, void *buf, size_t count)
+sread(struct stream *s, void *buf, size_t count)
 {
 	void const *d = s->buf;
 
@@ -37,8 +38,10 @@ sread(struct stream * s, void *buf, size_t count)
 	return true;
 }
 
+
+
 uint8_t
-read_uint8(struct stream * s)
+read_uint8(struct stream *s)
 {
 	uint8_t *d = (uint8_t *) s->buf;
 
@@ -48,8 +51,10 @@ read_uint8(struct stream * s)
 	return d[0];
 }
 
+
+
 uint16_t
-read_uint16be(struct stream * s)
+read_uint16be(struct stream *s)
 {
 	uint8_t *d = (uint8_t *) s->buf;
 
@@ -59,8 +64,9 @@ read_uint16be(struct stream * s)
 	return ((d[0] << 8) | (d[1] << 0));
 }
 
+
 uint16_t
-read_uint16le(struct stream * s)
+read_uint16le(struct stream *s)
 {
 	uint8_t *d = (uint8_t *) s->buf;
 
@@ -70,11 +76,21 @@ read_uint16le(struct stream * s)
 	return ((d[0] << 0) | (d[1] << 8));
 }
 
+uint16_t 
+read_uint16(struct stream *s)
+{
+	if (s->endian == ENDIAN_BIG) {
+		return read_uint16be(s);
+	} else {
+		return read_uint16le(s);
+	}
+}
+
+
 uint32_t
-read_uint32be(struct stream * s)
+read_uint32be(struct stream *s)
 {
 	uint8_t *d = (uint8_t *) s->buf;
-
 	if (!sskip(s, 4)) {
 		return 0;
 	}
@@ -82,12 +98,21 @@ read_uint32be(struct stream * s)
 }
 
 uint32_t
-read_uint32le(struct stream * s)
+read_uint32le(struct stream *s)
 {
 	uint8_t *d = (uint8_t *) s->buf;
-
 	if (!sskip(s, 4)) {
 		return 0;
 	}
 	return ((d[0] << 0) | (d[1] << 8) | (d[2] << 16) | (d[3] << 24));
+}
+
+uint32_t
+read_uint32(struct stream *s)
+{
+	if (s->endian == ENDIAN_BIG) {
+		return read_uint32be(s);
+	} else {
+		return read_uint32le(s);
+	}
 }
