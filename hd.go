@@ -46,6 +46,7 @@ func main() {
 			if ! skipping {
 				fmt.Println("*")
 			}
+			offset += n
 			skipping = true
 			continue
 		}
