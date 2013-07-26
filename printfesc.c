@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <ctype.h>
 
 int
 main(int argc, char *argv[])
@@ -11,13 +12,24 @@ main(int argc, char *argv[])
 		switch (c) {
 			case EOF:
 				break;
-			case '0' ... '9':
-			case 'A' ... 'Z':
-			case 'a' ... 'z':
-				putchar(c);
+			case '\n':
+				printf("\\n");
+				break;
+			case '\r':
+				printf("\\r");
+				break;
+			case '\t':
+				printf("\\t");
+				break;
+			case '"':
+				printf("\\\"");
 				break;
 			default:
-				printf("\\\\%03o", c);
+				if (isprint(c)) {
+					putchar(c);
+				} else {
+					printf("\\%03o", c);
+				}
 				break;
 		}
 	}

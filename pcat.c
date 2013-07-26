@@ -1,3 +1,17 @@
+/*
+ * pcat.c -- pcap to text
+ *
+ * Reads pcap on stdin, dumps text representation to stdout.
+ * This discards or ignores some parts of packets. If fidelity is a concern,
+ * deal directly with the original pcap.
+ *
+ * Output lines are of the form:
+ *
+ * 	PROTO SRC DST OPTS PAYLOAD
+ *
+ 
+ */
+
 #include <stdio.h>
 #include <stdint.h>
 #include "pcap.h"
@@ -31,33 +45,33 @@ print_payload(struct stream *s)
 void
 process_tcp(struct stream *s, char *saddr_s, char *daddr_s)
 {
-	uint16_t sport = read_uint16be(s);
-	uint16_t dport = read_uint16be(s);
-	uint32_t seq = read_uint32be(s);
-	uint32_t ack = read_uint32be(s);
+	uint16_t sport = read_uint16(s);
+	uint16_t dport = read_uint16(s);
+	uint32_t seq = read_uint32(s);
+	uint32_t ack = read_uint32(s);
 	uint8_t off = read_uint8(s);
 	uint8_t hlen = (off >> 4) * 4;
 	uint8_t flags = read_uint8(s);
-	uint16_t window = read_uint16be(s);
-	uint16_t chksum = read_uint16be(s);
-	uint16_t urgent = read_uint16be(s);
+	uint16_t window = read_uint16(s);
+	uint16_t chksum = read_uint16(s);
+	uint16_t urgent = read_uint16(s);
 
 	if (hlen < 20) {
 		printf("!");
 	}
 
-	printf("TCP %s,%u,%u %s,%u,%u ", saddr_s, sport, seq, daddr_s, dport, ack);
+	printf("TCP %s,%u %s,%u %u,%u,%d ", saddr_s, sport, daddr_s, dport, seq, ack, flags);
 }
 
 void
 process_udp(struct stream *s, char *saddr_s, char *daddr_s)
 {
-	uint16_t sport = read_uint16be(s);
-	uint16_t dport = read_uint16be(s);
-	uint16_t len = read_uint16be(s);
-	uint16_t chksum = read_uint16be(s);
+	uint16_t sport = read_uint16(s);
+	uint16_t dport = read_uint16(s);
+	uint16_t len = read_uint16(s);
+	uint16_t chksum = read_uint16(s);
 
-	printf("UDP %s,%u %s,%u ", saddr_s, sport, daddr_s, dport);
+	printf("UDP %s,%u %s,%u 0 ", saddr_s, sport, daddr_s, dport);
 }
 
 void
@@ -65,7 +79,7 @@ process_icmp(struct stream *s, char *saddr_s, char *daddr_s)
 {
 	uint8_t type = read_uint8(s);
 	uint8_t code = read_uint8(s);
-	uint16_t checksum = read_uint16be(s);
+	uint16_t checksum = read_uint16(s);
 	
 	printf("ICMP %d,%d %s %s ", type, code, saddr_s, daddr_s);
 }
@@ -76,14 +90,14 @@ process_ip4(struct stream *s)
 	uint8_t vhl = read_uint8(s);
 	uint8_t ihl = (vhl & 0x0f) * 4;
 	uint8_t tos = read_uint8(s);
-	uint16_t length = read_uint16be(s);
-	uint16_t id = read_uint16be(s);
-	uint16_t off = read_uint16be(s);
+	uint16_t length = read_uint16(s);
+	uint16_t id = read_uint16(s);
+	uint16_t off = read_uint16(s);
 	uint8_t ttl = read_uint8(s);
 	uint8_t proto = read_uint8(s);
-	uint16_t chksum = read_uint16be(s);
-	uint32_t saddr = read_uint32be(s);
-	uint32_t daddr = read_uint32be(s);
+	uint16_t chksum = read_uint16(s);
+	uint32_t saddr = read_uint32(s);
+	uint32_t daddr = read_uint32(s);
 
 	char saddr_s[20];
 	char daddr_s[20];
@@ -125,12 +139,12 @@ print_ethernet(struct stream *s)
 
 	sread(s, &saddr, sizeof(saddr));
 	sread(s, &daddr, sizeof(daddr));
-	ethertype = read_uint16be(s);
+	ethertype = read_uint16(s);
 
 	if (ethertype == 0x8100) {
 		// VLAN 
-		read_uint16be(s);
-		ethertype = read_uint16be(s);
+		read_uint16(s);
+		ethertype = read_uint16(s);
 	}
 
 	switch (ethertype) {
@@ -147,7 +161,7 @@ print_frame(struct pcap_file *p, struct pcap_pkthdr *hdr, char const *frame)
 	struct stream *s = &streambuf;
 
 	sinit(s, frame, hdr->caplen);
-	printf("%u.%06u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
+	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
 	switch (p->linktype) {
 		case LINKTYPE_ETHERNET:
 			print_ethernet(s);
