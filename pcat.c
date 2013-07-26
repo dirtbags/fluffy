@@ -67,7 +67,7 @@ process_icmp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint8_t code = read_uint8(s);
 	uint16_t checksum = read_uint16be(s);
 	
-	printf("ICMP %s %s %d ", saddr_s, daddr_s, code);
+	printf("ICMP %d,%d %s %s ", type, code, saddr_s, daddr_s);
 }
 
 void
@@ -147,7 +147,7 @@ print_frame(struct pcap_file *p, struct pcap_pkthdr *hdr, char const *frame)
 	struct stream *s = &streambuf;
 
 	sinit(s, frame, hdr->caplen);
-	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
+	printf("%u.%06u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
 	switch (p->linktype) {
 		case LINKTYPE_ETHERNET:
 			print_ethernet(s);

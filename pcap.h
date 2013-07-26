@@ -8,7 +8,9 @@
 #define MAGIC 0xa1b2c3d4
 #define MAXFRAME 9000
 
-/* Described at http://www.tcpdump.org/linktypes.html */
+/*
+ * Described at http://www.tcpdump.org/linktypes.html 
+ */
 #define LINKTYPE_ETHERNET 1
 #define LINKTYPE_RAW 101
 
