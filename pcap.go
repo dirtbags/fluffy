@@ -30,9 +30,14 @@ type PcapFile struct {
 }
 
 type FrameHeader struct {
-	ts time.Time
-	caplen uint32
-	framelen uint32
+	Sec uint32
+	Usec uint32
+	Caplen uint32
+	Framelen uint32
+}
+
+func (h *FrameHeader) Time() time.Time {
+	return time.Unix(int64(h.Sec), int64(h.Usec) * 1000)
 }
 
 type Frame struct {
@@ -78,13 +83,13 @@ func (r *Reader) Read() (*Frame, error) {
 		return nil, err
 	}
 
-	payload := make([]byte, h.caplen)
+	payload := make([]byte, h.Caplen)
 	l, err := r.r.Read(payload)
 	if err != nil {
 		return nil, err
 	}
-	if uint32(l) < h.caplen {
-		return nil, fmt.Errorf("Short read: %d (wanted %d)", l, h.caplen)
+	if uint32(l) < h.Caplen {
+		return nil, fmt.Errorf("Short read: %d (wanted %d)", l, h.Caplen)
 	}
 
 	ret := &Frame{h, payload}
@@ -98,4 +103,16 @@ func main() {
 	}
 
 	fmt.Println(r.order, r.header)
+
+	for ;; {
+		frame, err := r.Read()
+		if err != nil {
+			panic(err)
+		}
+		if frame == nil {
+			break
+		}
+		fmt.Println("hi")
+		fmt.Println(frame)
+	}
 }
