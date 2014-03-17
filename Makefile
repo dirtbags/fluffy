@@ -6,6 +6,10 @@ all: $(TARGETS)
 
 %: %.go
 	go build $<
+	
+install: $(TARGETS)
+	install -d $(DESTDIR)$(PREFIX)
+	install $(TARGETS) $(DESTDIR)$(PREFIX)/bin
 
 pmerge: pmerge.o pcap.o
 
