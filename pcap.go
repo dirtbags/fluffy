@@ -9,8 +9,9 @@ import (
 	"encoding/binary"
 )
 
-const MAGIC = 0xa1b2c3d4
 const MAXFRAME = 9000
+const MAGIC_BE = "\xa1\xb2\xc3\xd4"
+const MAGIC_LE = "\xd4\xc3\xb2\xa1"
 
 const LINKTYPE_ETHERNET = 1
 const LINKTYPE_RAW = 101
@@ -57,15 +58,21 @@ type Writer struct {
 
 func NewReader(r io.Reader) (*Reader, error) {
 	var h FileHeader
-	var magic uint32
-	var order binary.ByteOrder = binary.BigEndian
+	var order binary.ByteOrder
+	magic := make([]byte, 4)
 
-	if err := binary.Read(r, order, &magic); err != nil {
+	if err := r.Read(&magic); err != nil {
 		return nil, err
 	}
-	if magic != MAGIC {
+	switch (magic) {
+	case MAGIC_BE:
+		order = binary.BigEndian
+	case MAGIC_LE:
 		order = binary.LittleEndian
+	default:
+		return nil, fmt.Errorf("Cannot determine endianness")
 	}
+	
 
 	if err := binary.Read(r, order, &h); err != nil {
 		return nil, err
