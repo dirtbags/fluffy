@@ -1,6 +1,9 @@
 CFLAGS = -Wall -Werror
-TARGETS = pmerge puniq p4split pcat 
-TARGETS += hd pyesc printfesc xor unhex 
+TARGETS += puniq
+TARGETS += hd
+
+GOPATH = $(CURDIR)
+export GOPATH
 
 all: $(TARGETS)
 

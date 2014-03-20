@@ -1,9 +1,7 @@
-package main
-//package pcap
+package pcap
 
 import (
 	"time"
-	"os"
 	"fmt"
 	"io"
 	"encoding/binary"
@@ -12,6 +10,8 @@ import (
 const MAXFRAME = 9000
 const MAGIC_BE = "\xa1\xb2\xc3\xd4"
 const MAGIC_LE = "\xd4\xc3\xb2\xa1"
+const VERSION_MAJ = 2
+const VERSION_MIN = 4
 
 const LINKTYPE_ETHERNET = 1
 const LINKTYPE_RAW = 101
@@ -27,7 +27,7 @@ type FileHeader struct {
 
 type PcapFile struct {
 	order binary.ByteOrder
-	header FileHeader
+	Header FileHeader
 }
 
 type FrameHeader struct {
@@ -42,8 +42,12 @@ func (h *FrameHeader) Time() time.Time {
 }
 
 type Frame struct {
-	FrameHeader
-	payload []byte
+	Header FrameHeader
+	Payload string
+}
+
+func (f *Frame) Time() time.Time {
+	return f.Header.Time()
 }
 
 type Reader struct {
@@ -61,10 +65,15 @@ func NewReader(r io.Reader) (*Reader, error) {
 	var order binary.ByteOrder
 	magic := make([]byte, 4)
 
-	if err := r.Read(&magic); err != nil {
+	n, err := r.Read(magic)
+	if err != nil {
 		return nil, err
 	}
-	switch (magic) {
+	if (n < 4) {
+		return nil, fmt.Errorf("Cannot read pcap header")
+	}
+	
+	switch (string(magic)) {
 	case MAGIC_BE:
 		order = binary.BigEndian
 	case MAGIC_LE:
@@ -73,9 +82,12 @@ func NewReader(r io.Reader) (*Reader, error) {
 		return nil, fmt.Errorf("Cannot determine endianness")
 	}
 	
-
 	if err := binary.Read(r, order, &h); err != nil {
 		return nil, err
+	}
+	
+	if (h.VersionMajor != VERSION_MAJ) || (h.VersionMinor != VERSION_MIN) {
+		return nil, fmt.Errorf("Cannot handle pcap file version %d.%d", h.VersionMajor, h.VersionMinor)
 	}
 
 	ret := &Reader{PcapFile{order, h}, r}
@@ -86,7 +98,11 @@ func NewReader(r io.Reader) (*Reader, error) {
 func (r *Reader) Read() (*Frame, error) {
 	var h FrameHeader
 
-	if err := binary.Read(r.r, r.order, &h); err != nil {
+	err := binary.Read(r.r, r.order, &h)
+	if err == EOF {
+		return nil, nil
+	} 
+	if err != nil {
 		return nil, err
 	}
 
@@ -99,27 +115,46 @@ func (r *Reader) Read() (*Frame, error) {
 		return nil, fmt.Errorf("Short read: %d (wanted %d)", l, h.Caplen)
 	}
 
-	ret := &Frame{h, payload}
+	ret := &Frame{h, string(payload)}
 	return ret, nil
 }
 
-func main() {
-	r, err := NewReader(os.Stdin)
+func NewWriterLinkType(w io.Writer, linkType uint32) (*Writer, error) {
+	order := binary.BigEndian
+	h := &FileHeader{VERSION_MAJ, VERSION_MIN, 0, 0, 9000, linkType}
+	
+	n, err := w.Write([]byte(MAGIC_BE))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-
-	fmt.Println(r.order, r.header)
-
-	for ;; {
-		frame, err := r.Read()
-		if err != nil {
-			panic(err)
-		}
-		if frame == nil {
-			break
-		}
-		fmt.Println("hi")
-		fmt.Println(frame)
+	if n != len(MAGIC_BE) {
+		return nil, fmt.Errorf("Short write outputting header")
 	}
+	if err := binary.Write(w, order, h); err != nil {
+		return nil, err
+	}
+	
+	ret := &Writer{PcapFile{order, *h}, w}
+	
+	return ret, nil
 }
+
+func NewWriter(w io.Writer) (*Writer, error) {
+	return NewWriterLinkType(w, 1)
+}
+
+func (w *Writer) WriteFrame(frame Frame) (error) {
+	if err := binary.Write(w.w, w.order, frame.Header); err != nil {
+		return err
+	}
+	n, err := w.w.Write([]byte(frame.Payload))
+	if err != nil {
+		return err
+	}
+	if n < len(frame.Payload) {
+		return fmt.Errorf("Short write")
+	}
+	
+	return nil
+}
+
