@@ -1,13 +1,16 @@
 CFLAGS = -Wall -Werror
-TARGETS = pmerge puniq p4split pcat 
-TARGETS += hd pyesc printfesc xor unhex 
+TARGETS += pmerge 
+TARGETS += puniq 
+TARGETS += p4split 
+TARGETS += hd 
+TARGETS += pyesc 
+TARGETS += printfesc 
+TARGETS += xor 
+TARGETS += unhex
 
 all: $(TARGETS)
 
-%: %.go
-	go build $<
-	
-install: $(TARGETS)
+nstall: $(TARGETS)
 	install -d $(DESTDIR)$(PREFIX)
 	install $(TARGETS) $(DESTDIR)$(PREFIX)/bin
 
