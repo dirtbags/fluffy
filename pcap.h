@@ -6,7 +6,7 @@
 #include <stdbool.h>
 
 #define MAGIC 0xa1b2c3d4
-#define MAXFRAME 9000
+#define MAXFRAME 65535
 
 /*
  * Described at http://www.tcpdump.org/linktypes.html 

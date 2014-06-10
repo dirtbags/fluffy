@@ -10,8 +10,8 @@ TARGETS += unhex
 
 all: $(TARGETS)
 
-nstall: $(TARGETS)
-	install -d $(DESTDIR)$(PREFIX)
+install: $(TARGETS)
+	install -d $(DESTDIR)$(PREFIX)/bin
 	install $(TARGETS) $(DESTDIR)$(PREFIX)/bin
 
 pmerge: pmerge.o pcap.o
