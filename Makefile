@@ -1,5 +1,5 @@
-CFLAGS = -Wall -Werror -Wno-unused-variable
-TARGETS = pmerge puniq p4split pcat 
+CFLAGS += -Wall -Werror -Wno-unused-variable -O2
+TARGETS += pmerge puniq p4split pcat 
 TARGETS += hd pyesc printfesc xor unhex 
 
 all: $(TARGETS)
