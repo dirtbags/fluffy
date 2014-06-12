@@ -102,7 +102,7 @@ main(int argc, char *argv[])
 		 * Make sure it'll fit 
 		 */
 		if (cur->next.caplen > sizeof(frame)) {
-			fprintf(stderr, "error: huge frame (size %u)\n", (unsigned int) len);
+			fprintf(stderr, "error: huge frame (size %u)\n", (unsigned int) cur->next.caplen);
 			return EX_SOFTWARE;
 		}
 

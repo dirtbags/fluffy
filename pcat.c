@@ -35,10 +35,28 @@ ip4_addr(char *addr_s, uint32_t addr)
 }
 
 void
+print_nybble(uint8_t nybble)
+{
+	if (nybble < 10) {
+		putchar(nybble + '0');
+	} else {
+		putchar(nybble - 10 + 'a');
+	}
+}
+
+/* About 3x faster than printf("%02x", octet); */
+void
+printx(uint8_t octet)
+{
+	print_nybble(octet >> 4);
+	print_nybble(octet & 0xf);
+}
+
+void
 print_payload(struct stream *s)
 {
 	while (s->len) {
-		printf("%02x", read_uint8(s));
+		printx(read_uint8(s));
 	}
 }
 
@@ -177,13 +195,13 @@ void
 pcat(FILE * f)
 {
 	struct pcap_file p;
+	struct pcap_pkthdr hdr;
+	char frame[MAXFRAME];
 
 	if (-1 == pcap_open_in(&p, f))
 		return;
 
 	for (;;) {
-		struct pcap_pkthdr hdr;
-		char frame[MAXFRAME];
 
 		if (-1 == pcap_read_pkthdr(&p, &hdr)) {
 			break;
