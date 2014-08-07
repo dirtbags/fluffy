@@ -7,6 +7,9 @@ export GOPATH
 
 all: $(TARGETS)
 
+%: src/%.go
+	go build $@
+
 %: %.go
 	go build $<
 	
