@@ -1,4 +1,5 @@
 TARGETS += netarch
+TARGETS += puniq
 
 GOPATH = $(CURDIR)
 export GOPATH
@@ -10,4 +11,5 @@ test:
 	go test $(TARGETS)
 
 clean:
-	go clean
+	go clean $(TARGETS)
+	rm -f $(TARGETS)

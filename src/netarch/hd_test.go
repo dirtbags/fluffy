@@ -3,7 +3,7 @@ package netarch
 import (
 )
 
-func ExampleStringDump() {
+func ExampleDumpString() {
 	DumpString("hello world, I can write!")
 	// Output: 
 	// 00000000  68 65 6c 6c 6f 20 77 6f  72 6c 64 2c 20 49 20 63  ┆hello world, I c┆
@@ -11,7 +11,7 @@ func ExampleStringDump() {
 	// 00000019
 }
 
-func ExampleGapstrDump() {
+func ExampleDumpGapstr() {
 	g := new(Gapstr)
 	g = g.AppendString("Hell")
 	g = g.AppendGap(3)
