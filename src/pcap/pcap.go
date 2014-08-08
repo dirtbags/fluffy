@@ -99,9 +99,6 @@ func (r *Reader) Read() (*Frame, error) {
 	var h FrameHeader
 
 	err := binary.Read(r.r, r.order, &h)
-	if err == EOF {
-		return nil, nil
-	} 
 	if err != nil {
 		return nil, err
 	}
