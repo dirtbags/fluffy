@@ -2,9 +2,9 @@ package pcap
 
 import (
 	"time"
-	"fmt"
 	"io"
 	"encoding/binary"
+	"fmt"
 )
 
 const MAXFRAME = 9000
@@ -95,7 +95,7 @@ func NewReader(r io.Reader) (*Reader, error) {
 	return ret, nil
 }
 
-func (r *Reader) Read() (*Frame, error) {
+func (r *Reader) ReadFrame() (*Frame, error) {
 	var h FrameHeader
 
 	err := binary.Read(r.r, r.order, &h)
@@ -141,6 +141,10 @@ func NewWriter(w io.Writer) (*Writer, error) {
 }
 
 func (w *Writer) WriteFrame(frame Frame) (error) {
+	if frame.Header.Caplen != uint32(len(frame.Payload)) {
+		return fmt.Errorf("Caplen != len(Payload)")
+	}
+	
 	if err := binary.Write(w.w, w.order, frame.Header); err != nil {
 		return err
 	}

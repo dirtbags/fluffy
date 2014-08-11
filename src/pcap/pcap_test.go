@@ -6,7 +6,6 @@ import (
 	"math/rand"
 	"os"
 	"testing"
-	"time"
 )
 
 func randomString(prng *rand.Rand, length int) string {
@@ -32,7 +31,7 @@ func TestReader(t *testing.T) {
 	}
 	
 	for {
-		frame, err := pin.Read()
+		frame, err := pin.ReadFrame()
 		if err == io.EOF {
 			break
 		}
@@ -47,7 +46,7 @@ func TestReader(t *testing.T) {
 }
 
 func TestReadWrite(t *testing.T) {
-	prng := rand.New(rand.NewSource(time.Now().Unix()))
+	prng := rand.New(rand.NewSource(58))
 	frames := make([]Frame, 20)
 	
 	outf := new(bytes.Buffer)
@@ -56,28 +55,37 @@ func TestReadWrite(t *testing.T) {
 		t.Fatal(err)
 	}
 	
-	for _, f := range frames {
+	for i, f := range frames {
 		f.Header.Sec = prng.Uint32()
 		f.Header.Usec = prng.Uint32()
-		f.Header.Caplen = prng.Uint32()
 		f.Header.Framelen = prng.Uint32()
 		f.Payload = randomString(prng, prng.Intn(400))
+		f.Header.Caplen = uint32(len(f.Payload))
 		
-		pout.WriteFrame(f)
+		err := pout.WriteFrame(f); if err != nil {
+			t.Fatal(err)
+		}
+		
+		frames[i] = f
 	}
 	
 	pin, err := NewReader(outf)
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, f := range frames {
-		ff, err := pin.Read()
+	
+	if pout.Header != pin.Header {
+		t.Fatal("Headers differ")
+	}
+	
+	for i, f := range frames {
+		ff, err := pin.ReadFrame()
 		if err != nil {
 			t.Fatal(err)
 		}
 		
 		if *ff != f {
-			t.Fatal(ff, f)
+			t.Fatalf("Frame %d compare failed", i)
 		}
 	}		
 }
