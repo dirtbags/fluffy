@@ -21,7 +21,7 @@ func main() {
 
 	var lastframe *pcap.Frame = nil
 	for {
-		frame, err := r.Read()
+		frame, err := r.ReadFrame()
 		if err != nil {
 			panic(err)
 		}
