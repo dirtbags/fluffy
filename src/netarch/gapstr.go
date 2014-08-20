@@ -143,3 +143,25 @@ func (g *Gapstr) Slice(beg, end int) *Gapstr {
 	
 	return &Gapstr{chunks}
 }
+
+type GapstrReader struct {
+	g *Gapstr
+	pos int
+	GapRead bool
+}
+
+func NewGapstrReader(g *Gapstr) (*GapstrReader) {
+	return &GapstrReader{g, 0, false}
+}
+
+func (gr *GapstrReader) Read(p []byte) (n int, err error) {
+	gs := gr.g.Slice(gr.pos, gr.pos + len(p))
+	if gs.HasGaps() {
+		gr.GapRead = true
+	}
+	
+	s := []byte(gs.String())
+	nread := copy(p, s)
+	gr.pos += nread
+	return nread, nil
+}
