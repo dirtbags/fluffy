@@ -147,7 +147,7 @@ func (g *Gapstr) Slice(beg, end int) *Gapstr {
 type GapstrReader struct {
 	g *Gapstr
 	pos int
-	GapRead bool
+	gapread bool
 }
 
 func NewGapstrReader(g *Gapstr) (*GapstrReader) {
@@ -157,11 +157,15 @@ func NewGapstrReader(g *Gapstr) (*GapstrReader) {
 func (gr *GapstrReader) Read(p []byte) (n int, err error) {
 	gs := gr.g.Slice(gr.pos, gr.pos + len(p))
 	if gs.HasGaps() {
-		gr.GapRead = true
+		gr.gapread = true
 	}
 	
 	s := []byte(gs.String())
 	nread := copy(p, s)
 	gr.pos += nread
 	return nread, nil
+}
+
+func (gr *GapstrReader) GapRead() bool {
+	return gr.gapread
 }

@@ -53,7 +53,7 @@ func TestGapstr(t *testing.T) {
 
 func TestGapstrReader(t *testing.T) {
 	g := new(Gapstr)
-	g = g.AppendString("\xff\xff")
+	g = g.AppendString("\xff\xffaoeu")
 	g = g.AppendGap(8)
 	g = g.AppendString("\xff\xff\xff")
 	
@@ -68,6 +68,7 @@ func TestGapstrReader(t *testing.T) {
 		truth := gs[beg:end]
 		nread, err := gr.Read(b)
 		
+		DUMP(gr.GapRead())
 		AssertEqual(t, nread, len(truth))
 		AssertEqual(t, err, nil)
 		AssertEqual(t, string(b[:nread]), truth)
