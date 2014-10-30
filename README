@@ -21,16 +21,6 @@ but with unicode characters to represent all 256 octets,
 instead of using "." for unprintable characters.
 
 
-p4split -- split a pcap file by IPv4 address CIDR
----------------------------
-
-Splits a pcap file up ito 256 files, based on a CIDR.  For example:
-
-    p4split 32 < foo.pcap
-
-Will create [0-255].pcap
-
-
 pcat -- print text representation of pcap file
 ------------------------------
 

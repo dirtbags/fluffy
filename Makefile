@@ -1,7 +1,6 @@
 CFLAGS = -Wall -Werror
 TARGETS += pmerge 
 TARGETS += puniq 
-TARGETS += p4split 
 TARGETS += hd 
 TARGETS += pyesc 
 TARGETS += printfesc 
