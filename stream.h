@@ -9,6 +9,7 @@ enum endianness {
 	ENDIAN_BIG,
 	ENDIAN_LITTLE
 };
+#define ENDIAN_NETWORK ENDIAN_BIG
 
 struct stream {
 	char const *buf;

@@ -178,7 +178,7 @@ print_frame(struct pcap_file *p, struct pcap_pkthdr *hdr, char const *frame)
 	struct stream streambuf;
 	struct stream *s = &streambuf;
 
-	sinit(s, frame, hdr->caplen);
+	sinit(s, frame, hdr->caplen, ENDIAN_NETWORK);
 	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
 	switch (p->linktype) {
 		case LINKTYPE_ETHERNET:

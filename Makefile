@@ -6,6 +6,7 @@ TARGETS += pyesc
 TARGETS += printfesc 
 TARGETS += xor 
 TARGETS += unhex
+TARGETS += pcat
 
 all: $(TARGETS)
 
