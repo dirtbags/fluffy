@@ -16,7 +16,12 @@ Flags are sparse by design.
 How To Build
 ------------
 
-Just run `make` in this directory.
+This assumes you're on an Ubuntu system,
+or otherwise have `$HOME/bin` in your `PATH` environment variable.
+
+    git clone https://github.com/dirtbags/fluffy
+	cd fluffy
+	make DESTDIR=$HOME/bin install
 
 
 Programs
