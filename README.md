@@ -13,55 +13,23 @@ and produces output on stdout.
 Flags are sparse by design.
 
 
-hd -- Hex Dump
---------------
+How To Build
+------------
+
+Just run `make` in this directory.
+
+
+Programs
+--------
+
+### hd: Hex Dump
 
 Like the normal hd,
 but with unicode characters to represent all 256 octets,
 instead of using "." for unprintable characters.
 
 
-pcat -- print text representation of pcap file
-------------------------------
-
-Prints a (lossy) text representation of a pcap file to stdout.
-This program is the keystone of the Fluffy Suite.
-By representing everything as text,
-programmers can use any number of standard Unix text processing tools,
-such as sed, awk, cut, grep, or head.
-
-
-pmerge -- merge pcap files
--------------------------------------------
-
-Takes a list of pcap files, assuming they are sorted by time
-(you would have to work hard to create any other kind),
-and merges them into a single sorted output.
-
-
-printfesc -- printf escape input
---------------------------------
-
-Reads octets,
-writes a string suitable for copy-paste into printf.
-
-
-puniq -- omit repeated frames
---------------------------------
-
-Removes duplicate frames from input, 
-writing to output.
-
-
-pyesc -- python escape input
----------------------------------
-
-Escapes input octets for pasting into a python "print" statement.
-
-
-
-unhex -- unescape hex
----------------------------------
+### unhex: unescape hex
 
 Reads ASCII hex codes on stdin,
 writes those octets to stdout.
@@ -71,8 +39,7 @@ The following pipe is equivalent to "cat":
     ./hd | cut -b 11-58 | ./unhex
 
 
-xor -- xor mask octets
---------------------------------
+### xor: xor mask octets
 
 Applies the given mask as an xor to input.
 The mask will be repeated,
@@ -84,4 +51,39 @@ The "-x" option treats values as hex.
 The following pipe is equivalent to "cat":
 
 	./xor 42 | ./xor -x 2A
+
+
+### pcat: print text representation of pcap file
+
+Prints a (lossy) text representation of a pcap file to stdout.
+This program is the keystone of the Fluffy Suite.
+By representing everything as text,
+programmers can use any number of standard Unix text processing tools,
+such as sed, awk, cut, grep, or head.
+
+
+### pmerge: merge pcap files 
+
+Takes a list of pcap files, assuming they are sorted by time
+(you would have to work hard to create any other kind),
+and merges them into a single sorted output.
+
+
+### printfesc: printf escape input
+
+Reads octets,
+writes a string suitable for copy-paste into printf.
+
+
+### puniq: omit repeated frames
+
+Removes duplicate frames from input, 
+writing to output.
+
+
+### pyesc: python escape input
+
+Escapes input octets for pasting into a python "print" statement.
+
+
 
