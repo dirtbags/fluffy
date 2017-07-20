@@ -1,5 +1,7 @@
 /*
- * xor filter -- 2012 Zephyr <zephyr@dirtbags.net> This file is in the public domain.  I make no promises about the functionality
+ * xor filter -- 2017 Neale Pickett <zephyr@dirtbags.net>
+ *
+ * This file is in the public domain.  I make no promises about the functionality
  * of this program. 
  */
 
@@ -14,14 +16,14 @@ main(int argc, char *argv[])
 	int base = 0;
 	int arg;
 
-	if (argc < 2) {
-		fprintf(stderr, "Usage: %s [-x] m1 [m2 ...]\n", argv[0]);
-		return 1;
-	}
-
-	if (0 == strcmp(argv[1], "-x")) {
+	if (argv[start] && (0 == strcmp(argv[start], "-x"))) {
 		base = 16;
 		start += 1;
+	}
+
+	if (start + 1 > argc) {
+		fprintf(stderr, "Usage: %s [-x] m1 [m2 ...]\n", argv[0]);
+		return 1;
 	}
 
 	arg = start;
