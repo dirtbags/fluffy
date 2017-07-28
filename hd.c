@@ -23,7 +23,7 @@ const char *charset[] = {
 };
 
 int
-dump(FILE * f)
+dump(FILE *f)
 {
 	uint64_t p = 0;
 	uint8_t buf[32];
