@@ -16,12 +16,17 @@ Flags are sparse by design.
 How To Build
 ------------
 
-This assumes you're on an Ubuntu system,
-or otherwise have `$HOME/bin` in your `PATH` environment variable.
-
     git clone https://github.com/dirtbags/fluffy
 	cd fluffy
-	make DESTDIR=$HOME/bin install
+	make DESTDIR=$HOME install
+
+On an Ubuntu system,
+you may need to log out, and log back in,
+before the utilities are in your path.
+
+On a non-Ubuntu system,
+you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
+environment variable.
 
 
 Programs
