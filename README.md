@@ -16,8 +16,8 @@ Flags are sparse by design.
 How To Build
 ------------
 
-	wget -O - https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzf -
-	cd fluffy
+	curl https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzf -
+	cd fluffy-master
 	make DESTDIR=$HOME install
 
 On an Ubuntu system,
