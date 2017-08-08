@@ -63,13 +63,42 @@ The following pipe is equivalent to "cat":
 	./xor 42 | ./xor -x 2A
 
 
+### skip: discard initial octets
+
+Throws away some initial octets from stdin,
+and sends the rest to stdout.
+You could use `dd` for the same purpose.
+
+This skip command:
+
+	skip 5
+
+Is equivalent to this `dd` command:
+
+    dd skip=5 bs=1 status=none
+
+
 ### pcat: print text representation of pcap file
 
 Prints a (lossy) text representation of a pcap file to stdout.
+
 This program is the keystone of the Fluffy Suite.
 By representing everything as text,
 programmers can use any number of standard Unix text processing tools,
 such as sed, awk, cut, grep, or head.
+
+Output is tab-separated, of the format:
+
+    timestamp protocol options src dst payload
+
+Frequently you are only interested in the payload,
+so you can run pcat like:
+
+    cat myfile.pcap | pcat | cut -f 6
+
+Remember the `unhex` program,
+which will convert payloads to an octet stream,
+after you have done any maniuplations you want.
 
 
 ### pmerge: merge pcap files 
@@ -79,16 +108,16 @@ Takes a list of pcap files, assuming they are sorted by time
 and merges them into a single sorted output.
 
 
-### printfesc: printf escape input
-
-Reads octets,
-writes a string suitable for copy-paste into printf.
-
-
 ### puniq: omit repeated frames
 
 Removes duplicate frames from input, 
 writing to output.
+
+
+### printfesc: printf escape input
+
+Reads octets,
+writes a string suitable for copy-paste into printf.
 
 
 ### pyesc: python escape input

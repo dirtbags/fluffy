@@ -78,7 +78,7 @@ process_tcp(struct stream *s, char *saddr_s, char *daddr_s)
 		printf("!");
 	}
 
-	printf("TCP %s,%u %s,%u %u,%u,%d ", saddr_s, sport, daddr_s, dport, seq, ack, flags);
+	printf("TCP\t%s,%u\t%s,%u\t%u,%u,%d\t", saddr_s, sport, daddr_s, dport, seq, ack, flags);
 }
 
 void
@@ -89,7 +89,7 @@ process_udp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint16_t len = read_uint16(s);
 	uint16_t chksum = read_uint16(s);
 
-	printf("UDP %s,%u %s,%u 0 ", saddr_s, sport, daddr_s, dport);
+	printf("UDP\t%s,%u\t%s,%u\t0\t", saddr_s, sport, daddr_s, dport);
 }
 
 void
@@ -99,7 +99,7 @@ process_icmp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint8_t code = read_uint8(s);
 	uint16_t checksum = read_uint16(s);
 	
-	printf("ICMP %d,%d %s %s ", type, code, saddr_s, daddr_s);
+	printf("ICMP\t%d,%d\t%s\t%s\t", type, code, saddr_s, daddr_s);
 }
 
 void
@@ -140,7 +140,7 @@ process_ip4(struct stream *s)
 			process_icmp(s, saddr_s, daddr_s);
 			break;
 		default:
-			printf("P%d %s %s ", proto, saddr_s, daddr_s);
+			printf("P%d\t%s\t%s\t", proto, saddr_s, daddr_s);
 			break;
 	}
 
@@ -179,7 +179,7 @@ print_frame(struct pcap_file *p, struct pcap_pkthdr *hdr, char const *frame)
 	struct stream *s = &streambuf;
 
 	sinit(s, frame, hdr->caplen, ENDIAN_NETWORK); // pcap.c always outputs network byte order
-	printf("%u.%u ", hdr->ts.tv_sec, hdr->ts.tv_usec);
+	printf("%u.%u\t", hdr->ts.tv_sec, hdr->ts.tv_usec);
 	switch (p->linktype) {
 		case LINKTYPE_ETHERNET:
 			print_ethernet(s);
