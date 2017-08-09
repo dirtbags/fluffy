@@ -12,6 +12,10 @@ Usually, a program expects input on stdin,
 and produces output on stdout.
 Flags are sparse by design.
 
+Fluffy source code is purposefully spartan and easy to audit.
+Forks are encouraged,
+please let me know if you make one.
+
 
 How To Build
 ------------
@@ -112,6 +116,15 @@ and merges them into a single sorted output.
 
 Removes duplicate frames from input, 
 writing to output.
+
+
+### hex: hex-encode input
+
+The opposite of `unhex`.
+
+The following is the equivalent of `cat`:
+
+    hex | unhex
 
 
 ### printfesc: printf escape input
