@@ -75,17 +75,21 @@ The "-x" option treats values as hex.
 	cbcbcb
 
 
-### skip: discard initial octets
+### drop: discard octets
 
-Throws away some initial octets from stdin,
+Throws away some octets from stdin,
 and sends the rest to stdout.
 
 You could use `dd` for the same purpose.
 
-	$ echo abcdefgh | dd skip=5 bs=1 status=none
-	fgh
-	$ echo abcdefgh | skip 5
-	fgh
+    $ echo 01234567 | drop 0 3
+	34567
+	$ echo 01234567 | drop 4 7
+	01237
+	$ echo 01234567 | drop 4 6
+	012367
+	$ echo 01234567 | drop 3 9999
+	012
 
 
 ### pcat: print text representation of pcap file
