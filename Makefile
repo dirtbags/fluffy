@@ -3,7 +3,6 @@ TARGETS += pmerge
 TARGETS += puniq 
 TARGETS += hd 
 TARGETS += pyesc 
-TARGETS += printfesc 
 TARGETS += xor 
 TARGETS += unhex
 TARGETS += pcat
