@@ -8,7 +8,17 @@ main(int argc, char *argv[])
 
 		switch (c) {
 			case EOF:
+				putchar('\n');
 				return 0;
+			case 8:
+				printf("\\t");
+				break;
+			case 10:
+				printf("\\n");
+				break;
+			case 13:
+				printf("\\r");
+				break;
 			case 134:
 				printf("\\\\");
 				break;

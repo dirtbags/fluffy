@@ -7,6 +7,8 @@ TARGETS += printfesc
 TARGETS += xor 
 TARGETS += unhex
 TARGETS += pcat
+TARGETS += skip
+TARGETS += hex
 
 all: $(TARGETS)
 

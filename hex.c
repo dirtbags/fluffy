@@ -11,10 +11,15 @@ main(int argc, char *argv[])
 		if (EOF == c) {
 			break;
 		}
-		printf("%02x ", c);
-		if (7 == count % 8) {
+
+		if (count) {
 			putchar(' ');
+			if (0 == count % 8) {
+				putchar(' ');
+			}
 		}
+
+		printf("%02x", c);
 	}
 	putchar('\n');
 

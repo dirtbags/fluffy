@@ -42,15 +42,18 @@ Like the normal hd,
 but with unicode characters to represent all 256 octets,
 instead of using "." for unprintable characters.
 
+	$ printf "\0\x01\x02\x03\x30\x52\x9a" | hd
+	00000000  00 01 02 03 30 52 9a                              ┆·☺☻♥0RÜ┆
+	00000007
+
 
 ### unhex: unescape hex
 
 Reads ASCII hex codes on stdin,
 writes those octets to stdout.
 
-The following pipe is equivalent to "cat":
-
-    ./hd | cut -b 11-58 | ./unhex
+	$ echo 68 65 6c 6c 6f 0a | unhex
+	hello
 
 
 ### xor: xor mask octets
@@ -62,24 +65,27 @@ For a 16-value mask, the mask is applied to 16-octet chunks at a time.
 
 The "-x" option treats values as hex.
 
-The following pipe is equivalent to "cat":
-
-	./xor 42 | ./xor -x 2A
+	$ printf 'hello' | xor 22; echo
+	~szzy
+	$ printf 'hello' | xor 0x16; echo
+	~szzy
+	$ printf 'hello' | xor -x 16; echo
+	~szzy
+	$ printf 'bbbbbb' | xor 1 0; echo
+	cbcbcb
 
 
 ### skip: discard initial octets
 
 Throws away some initial octets from stdin,
 and sends the rest to stdout.
+
 You could use `dd` for the same purpose.
 
-This skip command:
-
-	skip 5
-
-Is equivalent to this `dd` command:
-
-    dd skip=5 bs=1 status=none
+	$ echo abcdefgh | dd skip=5 bs=1 status=none
+	fgh
+	$ echo abcdefgh | skip 5
+	fgh
 
 
 ### pcat: print text representation of pcap file
@@ -120,22 +126,19 @@ writing to output.
 
 ### hex: hex-encode input
 
-The opposite of `unhex`.
+The opposite of `unhex`:
+encoding all input into a single output line.
 
-The following is the equivalent of `cat`:
-
-    hex | unhex
-
-
-### printfesc: printf escape input
-
-Reads octets,
-writes a string suitable for copy-paste into printf.
+	$ printf "hello\nworld\n" | hex
+	68 65 6c 6c 6f 0a 77 6f  72 6c 64 0a
 
 
 ### pyesc: python escape input
 
 Escapes input octets for pasting into a python "print" statement.
+Also suitable for use as a C string,
+a Go string,
+and many other languages' string literals.
 
-
-
+	$ printf "hello\nworld\n" | pyesc
+	hello\nworld\n
