@@ -56,7 +56,7 @@ writes those octets to stdout.
 	hello
 
 
-### xor: xor mask octets
+### xor: xor octets
 
 Applies the given mask as an xor to input.
 The mask will be repeated,
