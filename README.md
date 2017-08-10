@@ -75,21 +75,19 @@ The "-x" option treats values as hex.
 	cbcbcb
 
 
-### drop: discard octets
+### slice: slice octet stream
 
-Throws away some octets from stdin,
-and sends the rest to stdout.
+Slices up input octet stream,
+similar to Python's slice operation.
 
-You could use `dd` for the same purpose.
-
-    $ echo 01234567 | drop 0 3
-	34567
-	$ echo 01234567 | drop 4 7
-	01237
-	$ echo 01234567 | drop 4 6
-	012367
-	$ echo 01234567 | drop 3 9999
-	012
+    ~/src/fluffy $ printf '0123456789abcdef' | slice 2; echo
+	23456789abcdef
+	~/src/fluffy $ printf '0123456789abcdef' | slice 2 6; echo
+	2345
+	~/src/fluffy $ printf '0123456789abcdef' | slice 2 6 8; echo
+	234589abcdef
+	~/src/fluffy $ printf '0123456789abcdef' | slice 2 6 8 0xa
+	234589
 
 
 ### pcat: print text representation of pcap file
@@ -132,6 +130,14 @@ writing to output.
 
 The opposite of `unhex`:
 encoding all input into a single output line.
+
+This differs from `hexdump` in the following ways:
+
+* All input is encoded into a single line of output
+* Does not output offsets
+* Does not output glyph representations of octets
+
+In other words: you can feed `hex` output into `unhex` with no manipulations.
 
 	$ printf "hello\nworld\n" | hex
 	68 65 6c 6c 6f 0a 77 6f  72 6c 64 0a

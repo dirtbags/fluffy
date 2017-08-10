@@ -6,7 +6,7 @@ TARGETS += pyesc
 TARGETS += xor 
 TARGETS += unhex
 TARGETS += pcat
-TARGETS += drop
+TARGETS += slice
 TARGETS += hex
 
 all: $(TARGETS)
