@@ -1,0 +1,8 @@
+#! /bin/sh
+
+## Hex dums all octets
+## Sort of like "man ascii"
+
+cd $(dirname $0)
+
+for i in $(seq 0 255); do printf "%02x" $i; done | ./unhex | ./hd
