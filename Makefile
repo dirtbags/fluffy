@@ -1,4 +1,5 @@
 CFLAGS = -Wall -Werror
+
 TARGETS += pmerge 
 TARGETS += puniq 
 TARGETS += hd 
@@ -9,11 +10,14 @@ TARGETS += pcat
 TARGETS += slice
 TARGETS += hex
 
+SCRIPTS += octets
+
 all: $(TARGETS)
 
-install: $(TARGETS)
+install: $(TARGETS) $(SCRIPTS)
 	install -d $(DESTDIR)$(PREFIX)/bin
 	install $(TARGETS) $(DESTDIR)$(PREFIX)/bin
+	install $(SCRIPTS) $(DESTDIR)$(PREFIX)/bin
 
 pmerge: pmerge.o pcap.o
 
