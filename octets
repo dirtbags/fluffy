@@ -1,6 +1,6 @@
 #! /bin/sh
 
-## Hex dums all octets
+## Hex dumps all octets
 ## Sort of like "man ascii"
 
 cd $(dirname $0)
