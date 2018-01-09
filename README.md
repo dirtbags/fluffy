@@ -20,6 +20,8 @@ please let me know if you make one.
 How To Build
 ------------
 
+### From Source
+
 	curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
 	cd fluffy-master
 	make DESTDIR=$HOME install
@@ -32,6 +34,14 @@ On a non-Ubuntu system,
 you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
 environment variable.
 
+### Arch Linux
+
+The AUR package [`fluffy-git`](https://aur.archlinux.org/packages/fluffy-git/)
+builds against the latest revision and installs it to `/usr/bin`:
+
+	git clone https://aur.archlinux.org/fluffy-git.git
+	cd fluffy-git
+	makepkg -sri
 
 Programs
 --------
