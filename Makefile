@@ -9,6 +9,7 @@ TARGETS += unhex
 TARGETS += pcat
 TARGETS += slice
 TARGETS += hex
+TARGETS += entropy
 
 SCRIPTS += octets
 

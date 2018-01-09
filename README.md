@@ -145,6 +145,20 @@ In other words: you can feed `hex` output into `unhex` with no manipulations.
 	41
 
 
+### entropy: compute shannon entropy
+
+Displays the Shannon entropy of the input.
+
+	~/src/fluffy $ echo -n a | ./entropy
+	0.000000
+	~/src/fluffy $ echo -n aaaaaaaaa | ./entropy
+	0.000000
+	~/src/fluffy $ echo -n aaaaaaaaab | ./entropy
+	0.468996
+	~/src/fluffy $ echo -n aaaaaaaaabc | ./entropy
+	0.865857
+
+
 ### pyesc: python escape input
 
 Escapes input octets for pasting into a python "print" statement.
