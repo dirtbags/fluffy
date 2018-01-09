@@ -29,5 +29,7 @@ p4split: p4split.o pcap.o
 pcat: pcat.o pcap.o stream.o
 pcat.o: CFLAGS += -Wno-unused-variable
 
+entropy: LDLIBS += -lm
+
 clean:
 	rm -f $(TARGETS) *.o
