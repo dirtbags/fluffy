@@ -8,9 +8,10 @@
 # * grep the cache, use sed, awk, whatever
 
 ./pmerge "$@" | ./pcat | while read ts proto src dst payload; do
-	#when=$(TZ=Z date --rfc-3339=ns -d @$ts)
+	when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")
 	printf "Packet %s None: None\n" $proto
-	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$ts"
+	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$when"
 	echo $payload | ./unhex | ./hd
 	echo
 done
+

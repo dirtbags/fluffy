@@ -18,9 +18,9 @@ please let me know if you make one.
 
 
 How To Build
-------------
+============
 
-### From Source
+## From Source
 
 	curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
 	cd fluffy-master
@@ -34,7 +34,7 @@ On a non-Ubuntu system,
 you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
 environment variable.
 
-### Arch Linux
+## Arch Linux
 
 The AUR package [`fluffy-git`](https://aur.archlinux.org/packages/fluffy-git/)
 builds against the latest revision and installs it to `/usr/bin`:
@@ -44,9 +44,9 @@ builds against the latest revision and installs it to `/usr/bin`:
 	makepkg -sri
 
 Programs
---------
+========
 
-### hd: Hex Dump
+## hd: Hex Dump
 
 Like the normal hd,
 but with unicode characters to represent all 256 octets,
@@ -57,7 +57,7 @@ instead of using "." for unprintable characters.
 	00000007
 
 
-### unhex: unescape hex
+## unhex: unescape hex
 
 Reads ASCII hex codes on stdin,
 writes those octets to stdout.
@@ -66,7 +66,7 @@ writes those octets to stdout.
 	hello
 
 
-### xor: xor octets
+## xor: xor octets
 
 Applies the given mask as an xor to input.
 The mask will be repeated,
@@ -85,7 +85,7 @@ The "-x" option treats values as hex.
 	cbcbcb
 
 
-### slice: slice octet stream
+## slice: slice octet stream
 
 Slices up input octet stream,
 similar to Python's slice operation.
@@ -100,7 +100,7 @@ similar to Python's slice operation.
 	234589
 
 
-### pcat: print text representation of pcap file
+## pcat: print text representation of pcap file
 
 Prints a (lossy) text representation of a pcap file to stdout.
 
@@ -123,20 +123,20 @@ which will convert payloads to an octet stream,
 after you have done any maniuplations you want.
 
 
-### pmerge: merge pcap files 
+## pmerge: merge pcap files 
 
 Takes a list of pcap files, assuming they are sorted by time
 (you would have to work hard to create any other kind),
 and merges them into a single sorted output.
 
 
-### puniq: omit repeated frames
+## puniq: omit repeated frames
 
 Removes duplicate frames from input, 
 writing to output.
 
 
-### hex: hex-encode input
+## hex: hex-encode input
 
 The opposite of `unhex`:
 encoding all input into a single output line.
@@ -155,7 +155,7 @@ In other words: you can feed `hex` output into `unhex` with no manipulations.
 	41
 
 
-### entropy: compute shannon entropy
+## entropy: compute shannon entropy
 
 Displays the Shannon entropy of the input.
 
@@ -169,7 +169,7 @@ Displays the Shannon entropy of the input.
 	0.865857
 
 
-### pyesc: python escape input
+## pyesc: python escape input
 
 Escapes input octets for pasting into a python "print" statement.
 Also suitable for use as a C string,
@@ -180,7 +180,7 @@ and many other languages' string literals.
 	hello\nworld\n
 
 
-### octets: display all octets
+## octets: display all octets
 
 Shows all octets from `00` to `ff` in a hex dump.
 This is occasionally more helpful than `man ascii`.
@@ -203,3 +203,57 @@ This is occasionally more helpful than `man ascii`.
     000000e0  e0 e1 e2 e3 e4 e5 e6 e7  e8 e9 ea eb ec ed ee ef  ┆αßΓπΣσµτΦΘΩδ∞φε∩┆
     000000f0  f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff  ┆⁰¹²³⁴⁵⁶⁷⁸⁹ⁱⁿ⁽⁼⁾¤┆
     00000100
+
+
+Example Recipes
+===============
+
+
+## Brute force single-byte xor
+
+   for i in $(seq 255); do cat data | xor $i; done
+
+
+## Pretty xor brute force
+
+For each attempt, display the value used in the xor, and hexdump the result
+
+    for i in $(seq 255); do printf "=== %02x\n" $i; cat data | xor $i | hd; done
+
+
+## Brute force xor of base64-encoded data
+
+Same pretty-print as before, and also pipe to `less` so we can page through it.
+
+    for i in $(seq 255); do
+      printf "=== %02x\n" $i; cat data.txt | base64 -d | xor $i | hd
+    done | less
+
+ 
+## Protocol manipulation
+
+For each ICMP packet, drop the first 5 octets, and base64-decode the remainder, preserving conversation chunks
+
+    cat input.pcap | pcat | grep ICMP | while read ts proto src dst payload; do 
+      printf "%s -> %s (%s)\n" $src $dst $ts
+      echo $payload | unhex | slice 5 | base64 -d | hd
+    done
+
+
+## Elementary protocol analysis framework
+
+This merges (by time) `file1.pcap` and `file2.pcap`,
+decoding payloads from each one,
+hex dumping payloads,
+and displaying meta information about each.
+It displays information conversationally,
+sort of like wireshark's "Follow TCP Stream",
+but with more details about meta-information.
+
+    ./pmerge file1.pcap file2.pcap | ./pcat | while read ts proto src dst payload; do
+        when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")
+        printf "Packet %s None: None\n" $proto
+        printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$when"
+        echo $payload | ./unhex | ./hd
+        echo
+    done
