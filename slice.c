@@ -38,6 +38,9 @@ main(int argc, char *argv[])
 			drop = !drop;
 		    argn += 1;
 			if (argn == argc) {
+				if (drop) {
+					break;
+				}
 				next = ULONG_MAX;
 			} else {
 				next = strtoul(argv[argn], NULL, 0);
