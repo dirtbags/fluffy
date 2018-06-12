@@ -211,7 +211,7 @@ Example Recipes
 
 ## Brute force single-byte xor
 
-   for i in $(seq 255); do cat data | xor $i; done
+    for i in $(seq 255); do cat data | xor $i; done
 
 
 ## Pretty xor brute force
