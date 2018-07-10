@@ -123,7 +123,7 @@ which will convert payloads to an octet stream,
 after you have done any maniuplations you want.
 
 
-## pmerge: merge pcap files 
+## pmerge: merge pcap files
 
 Takes a list of pcap files, assuming they are sorted by time
 (you would have to work hard to create any other kind),
@@ -132,7 +132,7 @@ and merges them into a single sorted output.
 
 ## puniq: omit repeated frames
 
-Removes duplicate frames from input, 
+Removes duplicate frames from input,
 writing to output.
 
 
@@ -185,8 +185,8 @@ and many other languages' string literals.
 Shows all octets from `00` to `ff` in a hex dump.
 This is occasionally more helpful than `man ascii`.
 
-    $ octets 
-    00000000  00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f  ┆·☺☻♥♦♣♠•◘○◙♂♀♪♫☼┆
+    $ octets
+    00000000  00 01 02 03 04 05 06 07  08 09 0a 0b 0c 0d 0e 0f  □☺☻♥♦♣♠•◘○◙♂♀♪♫☼
     00000010  10 11 12 13 14 15 16 17  18 19 1a 1b 1c 1d 1e 1f  ┆►◄↕‼¶§▬↨↑↓→←∟↔▲▼┆
     00000020  20 21 22 23 24 25 26 27  28 29 2a 2b 2c 2d 2e 2f  ┆ !"#$%&'()*+,-./┆
     00000030  30 31 32 33 34 35 36 37  38 39 3a 3b 3c 3d 3e 3f  ┆0123456789:;<=>?┆
@@ -234,7 +234,7 @@ Same pretty-print as before, and also pipe to `less` so we can page through it.
 
 For each ICMP packet, drop the first 5 octets, and base64-decode the remainder, preserving conversation chunks
 
-    cat input.pcap | pcat | grep ICMP | while read ts proto src dst payload; do 
+    cat input.pcap | pcat | grep ICMP | while read ts proto src dst payload; do
       printf "%s -> %s (%s)\n" $src $dst $ts
       echo $payload | unhex | slice 5 | base64 -d | hd
     done

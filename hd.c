@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <string.h>
 
+/* These glyphs are in most monospace fonts I tried in 2018 */
 const char *charset[] = {
 	"□", "☺", "☻", "♥", "♦", "♣", "♠", "•", "◘", "○", "◙", "♂", "♀", "♪", "♫", "☼",
 	"►", "◄", "↕", "‼", "¶", "§", "▬", "↨", "↑", "↓", "→", "←", "∟", "↔", "▲", "▼",
@@ -63,11 +64,11 @@ dump(FILE *f)
 				printf(" ");
 			}
 		}
-		printf(" ┆");
+		printf(" ");
 		for (i = 0; i < len; i += 1) {
 			printf("%s", charset[bytes[i]]);
 		}
-		if (-1 == printf("┆\n")) {
+		if (-1 == printf("\n")) {
 			perror("printf");
 			return 1;
 		}
