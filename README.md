@@ -34,6 +34,12 @@ On a non-Ubuntu system,
 you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
 environment variable.
 
+## Ubuntu
+
+    apt-add-repository ppa:pi-rho/security
+    apt-get update
+    apt-get install netre-tools
+
 ## Arch Linux
 
 The AUR package [`fluffy-git`](https://aur.archlinux.org/packages/fluffy-git/)
