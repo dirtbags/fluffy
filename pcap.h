@@ -6,10 +6,10 @@
 #include <stdbool.h>
 
 #define MAGIC 0xa1b2c3d4
-#define MAXFRAME 65535
+#define MAXFRAME 262144
 
 /*
- * Described at http://www.tcpdump.org/linktypes.html 
+ * Described at http://www.tcpdump.org/linktypes.html
  */
 #define LINKTYPE_ETHERNET 1
 #define LINKTYPE_RAW 101
@@ -56,7 +56,7 @@ struct pcap_pkthdr {
 
 
 /*
- * Debugging help 
+ * Debugging help
  */
 #define DUMPf(fmt, args...) fprintf(stderr, "%s:%s:%d " fmt "\n", __FILE__, __FUNCTION__, __LINE__, ##args)
 #define DUMP() DUMPf("")
