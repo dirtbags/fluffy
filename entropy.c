@@ -23,5 +23,6 @@ main(int argc, char *argv[])
 	}
 
 	printf("%f\n", H);
+    return 0;
 }
 
