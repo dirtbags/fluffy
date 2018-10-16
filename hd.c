@@ -42,7 +42,7 @@ dump(FILE *f)
 		if (0 == len)
 			break;
 
-		if (p && (0 == memcmp(buf, buf + 16, 16))) {
+		if (p && (len == 16) && (0 == memcmp(buf, buf + 16, 16))) {
 			if (!skipping) {
 				printf("*\n");
 				skipping = 1;
