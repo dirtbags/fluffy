@@ -62,6 +62,16 @@ instead of using "." for unprintable characters.
     00000000  00 01 02 03 30 52 9a                              □☺☻♥0RÜ
     00000007
 
+Also like the normal hd,
+this one will print an asterisk if the preceding 16 octets are repeated.
+Use the offset printed next to determine how many repeats you have.
+
+    printf '%64s' hello | hd
+    00000000  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
+    *
+    00000030  20 20 20 20 20 20 20 20  20 20 20 68 65 6c 6c 6f             hello
+    00000040
+
 
 ## unhex: unescape hex
 
