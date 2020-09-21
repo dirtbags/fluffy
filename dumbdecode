@@ -7,11 +7,11 @@
 # * tail -n +5000 to ignore the first 5000 lines of your cache.
 # * grep the cache, use sed, awk, whatever
 
-./pmerge "$@" | ./pcat | while read ts proto src dst payload; do
+pmerge "$@" | pcat | while read ts proto src dst opts payload; do
 	when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")
 	printf "Packet %s None: None\n" $proto
 	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$when"
-	echo $payload | ./unhex | ./hd
+	echo $payload | unhex | hd
 	echo
 done
 
