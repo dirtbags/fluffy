@@ -38,7 +38,12 @@ pcap_open_in(struct pcap_file *ctx, FILE * f)
 int
 pcap_open_out(struct pcap_file *ctx, FILE * f)
 {
-	struct pcap_file_header h = { MAGIC, 2, 4, 0, 0, MAXFRAME, 1 };
+	return pcap_open_out_linktype(ctx, f, 1);
+}
+
+int
+pcap_open_out_linktype(struct pcap_file *ctx, FILE *f, int32_t linktype) {
+	struct pcap_file_header h = { MAGIC, 2, 4, 0, 0, MAXFRAME, linktype };
 
 	if (1 != fwrite(&h, sizeof(h), 1, f)) {
 		return -1;

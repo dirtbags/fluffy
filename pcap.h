@@ -69,6 +69,7 @@ struct pcap_pkthdr {
 
 int pcap_open_in(struct pcap_file *ctx, FILE * f);
 int pcap_open_out(struct pcap_file *ctx, FILE * f);
+int pcap_open_out_linktype(struct pcap_file *ctx, FILE * f, int32_t linktype);
 int pcap_read_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr);
 int pcap_write_pkthdr(struct pcap_file *ctx, struct pcap_pkthdr *hdr);
 void pcap_close(struct pcap_file *ctx);

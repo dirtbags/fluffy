@@ -50,6 +50,7 @@ main(int argc, char *argv[])
 	/*
 	 * Open input files 
 	 */
+	int32_t linktype = 0;
 	for (i = 0; i < argc - 1; i += 1) {
 		char *fn = argv[i + 1];
 		struct input_file *cur = &files[nfiles];
@@ -68,6 +69,12 @@ main(int argc, char *argv[])
 			fprintf(stderr, "%s: unable to process\n", fn);
 			return EX_IOERR;
 		}
+		if (i == 0) {
+			linktype = cur->p.linktype;
+		} else if (linktype != cur->p.linktype) {
+			fprintf(stderr, "%s: incompatible linktype with first file\n", fn);
+			return EX_IOERR;
+		}
 		cur->active = 1;
 
 		if (0 == read_next(cur)) {
@@ -75,7 +82,7 @@ main(int argc, char *argv[])
 		}
 	}
 
-	if (-1 == pcap_open_out(&out, stdout)) {
+	if (-1 == pcap_open_out_linktype(&out, stdout, linktype)) {
 		perror("writing header");
 		return EX_IOERR;
 	}

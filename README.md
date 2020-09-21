@@ -127,7 +127,7 @@ such as sed, awk, cut, grep, or head.
 
 Output is tab-separated, of the format:
 
-    timestamp protocol options src dst payload
+    timestamp protocol src dst options payload
 
 Frequently you are only interested in the payload,
 so you can run pcat like:

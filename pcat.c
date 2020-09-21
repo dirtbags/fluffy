@@ -99,7 +99,7 @@ process_icmp(struct stream *s, char *saddr_s, char *daddr_s)
 	uint8_t code = read_uint8(s);
 	uint16_t checksum = read_uint16(s);
 	
-	printf("ICMP\t%d,%d\t%s\t%s\t", type, code, saddr_s, daddr_s);
+	printf("ICMP\t%s\t%s\t%d,%d\t", saddr_s, daddr_s, type, code);
 }
 
 void
