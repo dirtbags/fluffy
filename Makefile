@@ -20,6 +20,9 @@ install: $(TARGETS) $(SCRIPTS)
 	install $(TARGETS) $(DESTDIR)$(PREFIX)/bin
 	install $(SCRIPTS) $(DESTDIR)$(PREFIX)/bin
 
+uninstall:
+	cd $(PREFIX)/bin && rm -f $(TARGETS) $(SCRIPTS)
+
 pmerge: pmerge.o pcap.o
 
 puniq: puniq.o pcap.o

@@ -35,6 +35,10 @@ On a non-Ubuntu system,
 you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
 environment variable.
 
+## Uninstalling
+
+    make DESTDIR=$HOME uninstall
+
 
 Forks and Packages
 ==================
