@@ -25,29 +25,42 @@ How To Build
     curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
     cd fluffy-master
     make DESTDIR=$HOME install
+    PATH=$HOME/bin:$PATH
 
 On an Ubuntu system,
 you may need to log out, and log back in,
-before the utilities are in your path.
+before the utilities work in all terminals.
 
 On a non-Ubuntu system,
 you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
 environment variable.
 
+
+Forks and Packages
+==================
+
 ## Ubuntu
 
-    apt-add-repository ppa:pi-rho/security
-    apt-get update
-    apt-get install netre-tools
+pi-rho, a network archaeology instructor,
+has forked these tools,
+added command-line options,
+manual pages,
+and packaged them for Ubuntu.
+
+This fork is mostly compatible with these tools,
+but there are a few subtle differences.
+If you are installing these for Cyber Fire,
+you should probably stick with a source install.
+
+[pi-rho's packages](https://launchpad.net/~pi-rho/+archive/ubuntu/security)
 
 ## Arch Linux
 
 The AUR package [`fluffy-git`](https://aur.archlinux.org/packages/fluffy-git/)
-builds against the latest revision and installs it to `/usr/bin`:
+builds against the latest revision and installs it to `/usr/bin`.
+This was packaged by Cyber Fire attendee AGausmann.
+Thanks!
 
-    git clone https://aur.archlinux.org/fluffy-git.git
-    cd fluffy-git
-    makepkg -sri
 
 Programs
 ========
