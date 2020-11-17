@@ -20,22 +20,24 @@ please let me know if you make one.
 How To Build
 ============
 
-## From Source
+## From Source, System-Wide Install
 
     curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
     cd fluffy-master
-    make DESTDIR=$HOME install
+    sudo make DESTDIR=/usr/local install
+
+### Uninstalling
+
+    sudo make DESTDIR=/usr/local uninstall
+
+## From Source, Install Only For Yourself
+
+    curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
+    cd fluffy-master
+    sudo make DESTDIR=$HOME install
     PATH=$HOME/bin:$PATH
 
-On an Ubuntu system,
-you may need to log out, and log back in,
-before the utilities work in all terminals.
-
-On a non-Ubuntu system,
-you may need to edit your `.bashrc` to add `$HOME/bin` to your `PATH`
-environment variable.
-
-## Uninstalling
+### Uninstalling
 
     make DESTDIR=$HOME uninstall
 
