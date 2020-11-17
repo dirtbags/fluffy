@@ -17,29 +17,32 @@ Forks are encouraged,
 please let me know if you make one.
 
 
-How To Build
+How To Build And Install
 ============
 
-## From Source, System-Wide Install
+Ubuntu
+-------
 
+    sudo apt install build-essential
     curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
     cd fluffy-master
+    make
     sudo make DESTDIR=/usr/local install
 
-### Uninstalling
+Red Hat
+-------
 
-    sudo make DESTDIR=/usr/local uninstall
-
-## From Source, Install Only For Yourself
-
+    yum groupinstall 'Development Tools'
     curl -L https://github.com/dirtbags/fluffy/archive/master.tar.gz | tar xzvf -
     cd fluffy-master
-    sudo make DESTDIR=$HOME install
-    PATH=$HOME/bin:$PATH
+    make
+    sudo make DESTDIR=/usr/local install
 
-### Uninstalling
 
-    make DESTDIR=$HOME uninstall
+How To Uninstall
+============
+
+    make DESTDIR=/usr/local uninstall
 
 
 Forks and Packages
