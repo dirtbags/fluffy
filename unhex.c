@@ -14,12 +14,12 @@ main(int argc, char *argv[])
 
 	while (1) {
 		int c = getchar();
+		if (feof(stdin))
+            		return 0;
 
 		count += 1;
 
 		switch (c) {
-			case EOF:
-				return 0;
 			case '0' ... '9':
 				acc = (acc << 4) + c - '0';
 				nybble += 1;
