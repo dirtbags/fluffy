@@ -1,3 +1,5 @@
+DESTDIR ?= $(HOME)
+
 CFLAGS = -Wall -Werror
 
 TARGETS += pmerge 
@@ -10,6 +12,8 @@ TARGETS += pcat
 TARGETS += slice
 TARGETS += hex
 TARGETS += entropy
+TARGETS += freq
+TARGETS += histogram
 
 SCRIPTS += octets
 

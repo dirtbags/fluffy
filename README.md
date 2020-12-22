@@ -85,15 +85,23 @@ instead of using "." for unprintable characters.
     00000007
 
 Also like the normal hd,
-this one will print an asterisk if the preceding 16 octets are repeated.
+this one will print an ellipsis if the preceding 16 octets are repeated.
 Use the offset printed next to determine how many repeats you have.
 
-    printf '%64s' hello | hd
+    $ printf '%64s' hello | hd
     00000000  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
-    *
+    ⋮
     00000030  20 20 20 20 20 20 20 20  20 20 20 68 65 6c 6c 6f             hello
     00000040
 
+You can disable this with `-v`
+
+    $ printf '%64s' hello | hd
+    00000000  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
+    00000010  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
+    00000020  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
+    00000030  20 20 20 20 20 20 20 20  20 20 20 68 65 6c 6c 6f             hello
+    00000040
 
 ## unhex: unescape hex
 
@@ -128,13 +136,13 @@ The "-x" option treats values as hex.
 Slices up input octet stream,
 similar to Python's slice operation.
 
-    ~/src/fluffy $ printf '0123456789abcdef' | slice 2; echo
+    $ printf '0123456789abcdef' | slice 2; echo
     23456789abcdef
-    ~/src/fluffy $ printf '0123456789abcdef' | slice 2 6; echo
+    $ printf '0123456789abcdef' | slice 2 6; echo
     2345
-    ~/src/fluffy $ printf '0123456789abcdef' | slice 2 6 8; echo
+    $ printf '0123456789abcdef' | slice 2 6 8; echo
     234589abcdef
-    ~/src/fluffy $ printf '0123456789abcdef' | slice 2 6 8 0xa
+    $ printf '0123456789abcdef' | slice 2 6 8 0xa
     234589
 
 
@@ -154,7 +162,7 @@ Output is tab-separated, of the format:
 Frequently you are only interested in the payload,
 so you can run pcat like:
 
-    cat myfile.pcap | pcat | cut -f 6
+    $ cat myfile.pcap | pcat | cut -f 6
 
 Remember the `unhex` program,
 which will convert payloads to an octet stream,
@@ -197,13 +205,13 @@ In other words: you can feed `hex` output into `unhex` with no manipulations.
 
 Displays the Shannon entropy of the input.
 
-    ~/src/fluffy $ echo -n a | ./entropy
+    $ echo -n a | ./entropy
     0.000000
-    ~/src/fluffy $ echo -n aaaaaaaaa | ./entropy
+    $ echo -n aaaaaaaaa | ./entropy
     0.000000
-    ~/src/fluffy $ echo -n aaaaaaaaab | ./entropy
+    $ echo -n aaaaaaaaab | ./entropy
     0.468996
-    ~/src/fluffy $ echo -n aaaaaaaaabc | ./entropy
+    $ echo -n aaaaaaaaabc | ./entropy
     0.865857
 
 
@@ -241,6 +249,44 @@ This is occasionally more helpful than `man ascii`.
     000000e0  e0 e1 e2 e3 e4 e5 e6 e7  e8 e9 ea eb ec ed ee ef  αßΓπΣσµτΦΘΩδ∞φε∩
     000000f0  f0 f1 f2 f3 f4 f5 f6 f7  f8 f9 fa fb fc fd fe ff  ≡±≥≤⌠⌡÷≈°∙·√ⁿ²■¤
     00000100
+
+## freq: count octet frequencies
+
+For all 256 octets,
+show frequency of each in input.
+
+    $ printf 'hello' | freq
+    1 65 e
+    1 68 h
+    2 6c l
+    1 6f o
+    $ printf 'hello' | freq -a # Show all octets, even if count==0
+    0 00 ·
+    0 01 ☺
+    0 02 ☻
+    0 03 ♥
+    0 04 ♦
+    0 05 ♣
+    0 06 ♠
+    0 07 •
+    0 08 ◘
+    ...
+
+
+## histogram: display histogram for input
+
+Reads the first number of each line, and prints a histogram.
+
+`-d DIVISOR` will divide each bar's width.
+
+    $ echo 'aaaaaaaaAAAAAAAAaaaaaaaa' | freq | histogram
+    0a ◙ # 1
+    41 A ######## 8
+    61 a ################ 16
+    $ echo 'aaaaaaaaAAAAAAAAaaaaaaaa' | freq | histogram -d 4
+    0a ◙  1
+    41 A ## 8
+    61 a #### 16
 
 
 Example Recipes

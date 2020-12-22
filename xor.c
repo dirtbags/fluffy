@@ -1,5 +1,5 @@
 /*
- * xor filter -- 2017 Neale Pickett <zephyr@dirtbags.net>
+ * xor filter -- 2020 Neale Pickett <neale@woozle.org>
  *
  * This file is in the public domain.  I make no promises about the functionality
  * of this program. 
@@ -7,43 +7,46 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <unistd.h>
 
-int
-main(int argc, char *argv[])
-{
-	int start = 1;
-	int base = 0;
-	int arg;
+int main(int argc, char* argv[]) {
+  int radix = 10;
+  int arg;
+  int c;
 
-	if (argv[start] && (0 == strcmp(argv[start], "-x"))) {
-		base = 16;
-		start += 1;
-	}
+  while ((c = getopt(argc, argv, "a")) != -1) {
+    switch (c) {
+      case 'x':
+        radix = 16;
+        break;
+      default:
+        fprintf(stderr, "Usage: %s [-x] m1 [m2 ...]\n", argv[0]);
+        return 1;
+    }
+  }
 
-	if (start + 1 > argc) {
-		fprintf(stderr, "Usage: %s [-x] m1 [m2 ...]\n", argv[0]);
-		return 1;
-	}
+  if (!argv[optind]) {
+    return 1;
+  }
 
-	arg = start;
+  arg = optind;
 
-	while (1) {
-		int c = getchar();
-		unsigned char mask;
+  while (1) {
+    int c = getchar();
+    unsigned char mask;
 
-		if (!argv[arg]) {
-			arg = start;
-		}
-		mask = strtol(argv[arg++], NULL, base);
+    if (!argv[arg]) {
+      arg = optind;
+    }
+    mask = strtol(argv[arg++], NULL, radix);
 
-		if (EOF == c) {
-			break;
-		}
+    if (EOF == c) {
+      break;
+    }
 
-		c ^= mask;
-		putchar(c);
-	}
+    c ^= mask;
+    putchar(c);
+  }
 
-	return 0;
+  return 0;
 }
