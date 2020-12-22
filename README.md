@@ -260,7 +260,7 @@ show frequency of each in input.
     1 68 h
     2 6c l
     1 6f o
-    $ printf 'hello' | freq -a # Show all octets, even if count==0
+    $ printf 'hello' | freq -a
     0 00 ·
     0 01 ☺
     0 02 ☻
