@@ -27,6 +27,9 @@ install: $(TARGETS) $(SCRIPTS)
 uninstall:
 	cd $(PREFIX)/bin && rm -f $(TARGETS) $(SCRIPTS)
 
+test: $(TARGETS) test.sh
+	./test.sh
+
 pmerge: pmerge.o pcap.o
 
 puniq: puniq.o pcap.o
