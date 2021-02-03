@@ -1,8 +1,6 @@
 The Fluffy Suite
 ============
 
-![Build/Test](https://github.com/dirtbags/fluffy/workflows/Build/Test/badge.svg)
-
 Fluffy was begun in April 2011 in Tennessee,
 as a replacement for the aging "dirtbags.ip" codebase.
 It is comprised of multiple small standalone binaries,
