@@ -2,7 +2,12 @@ name: Build/Test
 
 on: 
   push:
-    branches:
+    branches
+      - master:
+      - main
+    pull_request:
+    branches: 
+      - master
       - main
 
 jobs:
