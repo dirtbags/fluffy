@@ -2,10 +2,10 @@ name: Build/Test
 
 on: 
   push:
-    branches
+    branches:
       - master:
       - main
-    pull_request:
+  pull_request:fi
     branches: 
       - master
       - main
