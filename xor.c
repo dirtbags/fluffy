@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
   int arg;
   int c;
 
-  while ((c = getopt(argc, argv, "ax")) != -1) {
+  while ((c = getopt(argc, argv, "x")) != -1) {
     switch (c) {
       case 'x':
         radix = 16;
