@@ -3,16 +3,16 @@ name: Build/Test
 on: 
   push:
     branches:
-      - master:
+      - master
       - main
   pull_request:
-    branches: 
+    branches:
       - master
       - main
 
 jobs:
   test:
-    name: Test mothd
+    name: Build+test mothd
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
