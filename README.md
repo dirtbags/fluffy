@@ -96,7 +96,7 @@ Use the offset printed next to determine how many repeats you have.
 
 You can disable this with `-v`
 
-    $ printf '%64s' hello | hd
+    $ printf '%64s' hello | hd -v
     00000000  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
     00000010  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
     00000020  20 20 20 20 20 20 20 20  20 20 20 20 20 20 20 20                  
