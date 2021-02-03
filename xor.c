@@ -10,11 +10,11 @@
 #include <unistd.h>
 
 int main(int argc, char* argv[]) {
-  int radix = 10;
+  int radix = 0;
   int arg;
   int c;
 
-  while ((c = getopt(argc, argv, "a")) != -1) {
+  while ((c = getopt(argc, argv, "ax")) != -1) {
     switch (c) {
       case 'x':
         radix = 16;
