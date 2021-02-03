@@ -5,25 +5,24 @@ successes=0
 failures=0
 
 H () {
-    section="$*"
     printf "\n%-20s " "$*"
 }
 
 title() {
     thistest="$1"
-    tests=$(expr $tests + 1)
+    tests=$(($tests + 1))
 }
 
 successes=0
 pass () {
     printf '.'
-    successes=$(expr $successes + 1)
+    successes=$(($successes + 1))
 }
 
 failures=0
 fail () {
     printf '(%s)' "$thistest"
-    failures=$(expr $failures + 1)
+    failures=$(($failures + 1))
 }
 
 
