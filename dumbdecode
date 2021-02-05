@@ -2,13 +2,24 @@
 
 # Emulate dumbdecode.py from python netarch
 
-# The advantage here is, after the pcat step, you're dealing with text files.
-# * cache the output of pcat to speed things up a little.
-# * tail -n +5000 to ignore the first 5000 lines of your cache.
-# * grep the cache, use sed, awk, whatever
+# What this script does:
+# * pmerge takes multiple pcap files and outputs a single pcap stream,
+#   with everything in time order
+# * pcat outputs a line with six fields for each input packet:
+#   * timestamp (in seconds, with millisecond precison)
+#   * protocol (like `UDP` or `TCP`)
+#   * source address
+#   * destination address
+#   * protocol options (like SYN or PSH)
+#   * payload, hex-encoded
+# * For each pcat output line:
+#   * Convert timestamp to RFC3339 format, so humans can read it
+#   * Print a bit of header with the protocol, using python netarch formatting
+#   * Print the source, destination, and formatted time
+#   * Write out a hex dump of the paylaod
 
 pmerge "$@" | pcat | while read ts proto src dst opts payload; do
-	when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")
+	when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")  # Format time as human-readable
 	printf "Packet %s None: None\n" $proto
 	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$when"
 	echo $payload | unhex | hd
