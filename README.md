@@ -105,12 +105,27 @@ You can disable this with `-v`
 
 ## unhex: unescape hex
 
-Reads ASCII hex codes on stdin,
+Reads octet hex codes on stdin,
 writes those octets to stdout.
 
     $ echo 68 65 6c 6c 6f 0a | unhex
     hello
 
+## undec: unescape decimal
+
+Reads octet decimal codes on stdin,
+writes those octets to stdout.
+
+    $ echo 104 101 108 108 111 10 | undec
+    hello
+
+## unoct: unescape octal
+
+Reads octet octal codes on stdin,
+writes those octets to stdout.
+
+    $ echo 150 145 154 154 157 012 | unoct 
+    hello
 
 ## xor: xor octets
 
