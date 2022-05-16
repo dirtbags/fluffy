@@ -144,6 +144,8 @@ The "-x" option treats values as hex.
     ~szzy
     $ printf 'bbbbbb' | xor 1 0; echo
     cbcbcb
+    $ printf 'bbbbbb' | xor -x a b; echo
+    hihihi
 
 
 ## slice: slice octet stream
