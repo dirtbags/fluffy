@@ -232,6 +232,19 @@ Displays the Shannon entropy of the input.
     0.865857
 
 
+## printy: show density of printable octets
+
+Displays the number of printable octets
+divided by the total number of octets.
+
+    $ echo -n abcd | ./printy
+    1.000000
+    $ echo abcd | ./printy   # Newline is not printable
+    0.800000
+    $ echo 00 41 | ./unhex | ./printy
+    0.500000
+
+
 ## pyesc: python escape input
 
 Escapes input octets for pasting into a python "print" statement.

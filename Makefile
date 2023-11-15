@@ -16,6 +16,7 @@ TARGETS += hex
 TARGETS += entropy
 TARGETS += freq
 TARGETS += histogram
+TARGETS += printy
 
 SCRIPTS += octets
 
