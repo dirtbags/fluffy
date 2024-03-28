@@ -313,10 +313,35 @@ Reads the first number of each line, and prints a histogram.
     0a ◙ # 1
     41 A ######## 8
     61 a ################ 16
-    $ echo 'aaaaaaaaAAAAAAAAaaaaaaaa' | freq | histogram -d 4
-    0a ◙  1
-    41 A ## 8
-    61 a #### 16
+    $ echo aaaaaabcccc | freq | histogram
+    0a ◙ # 1
+    61 a ###### 6
+    62 b # 1
+    63 c #### 4
+    $ echo aaaaaabcccc | freq | histogram | sort -nk 4
+    0a ◙ # 1
+    62 b # 1
+    63 c #### 4
+    61 a ###### 6
+
+
+## bubblebabble: print bubblebabble digest of input
+
+Prints a [bubblebabble digest](https://web.mit.edu/kenta/www/one/bubblebabble/spec/jrtrjwzi/draft-huima-01.txt)
+of the input.
+
+This is a *digest*, not a *hash*:
+it can be reversed.
+If you write `unbubblebabble` before I do,
+please send it to me :)
+
+    $ printf '' | bubblebabble
+    xexax
+    $ printf 1234567890 | bubblebabble
+    xesef-disof-gytuf-katof-movif-baxux
+    $ printf Pineapple | bubblebabble
+    xigak-nyryk-humil-bosek-sonax
+
 
 
 Example Recipes

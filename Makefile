@@ -17,6 +17,7 @@ TARGETS += entropy
 TARGETS += freq
 TARGETS += histogram
 TARGETS += printy
+TARGETS += bubblebabble
 
 SCRIPTS += octets
 
