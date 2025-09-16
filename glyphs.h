@@ -8,20 +8,21 @@
  * Also I refuse to give up the first 16, 
  * since I've been seeing them for 40 years.
  * 
- * It's 2021 and the state of monospace glyphs is a mess.
+ * It's ~~2021~~ 2024 and the state of monospace glyphs is *still* a mess.
  * Not that I blame anybody. 
  * The notion of monospacing needs to go away.
  * I'm going to need to figure out a smarter way to display 
  * grids of characters in a terminal.
- * 
- * Anyway, this is the best I could get. It looks okay in Cousine.
- * It looks horrible in Source Code Pro, which I think is borrowing
- * glyphs from Noto Mono.
+ *
+ * This renders as fixed width using:
+ *
+ * - Cascadia Code in Emacs on Windows 11
+ * - Whatever I'm using in Chrome on Windows 11
  * 
  *  */
 const char *fluffyglyphs[] = {
 	"·", "☺", "☻", "♥", "♦", "♣", "♠", "•", "◘", "○", "◙", "♂", "♀", "♪", "♫", "☼",
-	"⏵", "⏴", "↕", "‼", "¶", "§", "‽", "↨", "↑", "↓", "→", "←", "∟", "↔", "⏶", "⏷",
+	"►", "◄", "↕", "‼", "¶", "§", "‽", "↨", "↑", "↓", "→", "←", "∟", "↔", "▲", "▼",
 	" ", "!", "\"", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/",
 	"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "<", "=", ">", "?",
 	"@", "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O",

@@ -19,9 +19,8 @@
 #   * Write out a hex dump of the paylaod
 
 pmerge "$@" | pcat | while read ts proto src dst opts payload; do
-	when=$(TZ=Z date -d @${ts%.*} "+%Y-%m-%d %H:%M:%S")  # Format time as human-readable
-	printf "Packet %s None: None\n" $proto
-	printf "    %s -> %s (%s)\n" ${src%,*} ${dst%,*} "$when"
+	when=$(TZ=Z date -d @${ts%.*} -Ins)  # Format time as human-readable
+	printf "    $proto %s → %s (%s)\n" $src $dst "$when"
 	echo $payload | unhex | hd
 	echo
 done

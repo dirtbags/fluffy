@@ -5,7 +5,7 @@
 
 struct input_file {
 	int active;
-	struct pcap_file p;
+	struct pcap_file *p;
 	struct pcap_pkthdr next;
 };
 
@@ -21,17 +21,19 @@ usage(int ret)
 int
 read_next(struct input_file *file)
 {
-	if (!file->active)
+	if (!file->active) {
 		return -1;
-
-	if (-1 == pcap_read_pkthdr(&file->p, &file->next)) {
-		pcap_close(&file->p);
+	}
+	
+	pcap_read_pkthdr(file->p, &file->next);
+	if (feof(file->p->f->f)) {
+		fclose(file->p->f->f);
 		file->active = 0;
 		file->next.ts.tv_sec = 0xffffffff;
 		file->next.ts.tv_usec = 0xffffffff;
 		return -1;
 	}
-
+	
 	return 0;
 }
 
@@ -39,13 +41,17 @@ int
 main(int argc, char *argv[])
 {
 	struct input_file files[argc - 1];
+	struct pcap_file pfiles[argc - 1];
+	BINFILE bfiles[argc - 1];
 	int nfiles = 0;
 	int nopen;
 	int i;
+	BINFILE fout = {stdout, ENDIAN_NETWORK};
 	struct pcap_file out;
 
-	if (1 == argc)
+	if (1 == argc) {
 		return usage(0);
+	}
 
 	/*
 	 * Open input files 
@@ -54,24 +60,27 @@ main(int argc, char *argv[])
 	for (i = 0; i < argc - 1; i += 1) {
 		char *fn = argv[i + 1];
 		struct input_file *cur = &files[nfiles];
-		FILE *f;
+		struct pcap_file *curp = &pfiles[nfiles];
+		BINFILE *f = &bfiles[nfiles];
 
-		if ('-' == fn[0])
+		if ('-' == fn[0]) {
 			return usage(0);
+		}
 
-		f = fopen(fn, "rb");
-		if (NULL == f) {
+		f->f = fopen(fn, "rb");
+		if (NULL == f->f) {
 			perror(fn);
 			return EX_NOINPUT;
 		}
 
-		if (-1 == pcap_open_in(&cur->p, f)) {
+		cur->p = curp;
+		if (-1 == pcap_open_in(cur->p, f)) {
 			fprintf(stderr, "%s: unable to process\n", fn);
 			return EX_IOERR;
 		}
 		if (i == 0) {
-			linktype = cur->p.linktype;
-		} else if (linktype != cur->p.linktype) {
+			linktype = cur->p->h.linktype;
+		} else if (linktype != cur->p->h.linktype) {
 			fprintf(stderr, "%s: incompatible linktype with first file\n", fn);
 			return EX_IOERR;
 		}
@@ -82,7 +91,7 @@ main(int argc, char *argv[])
 		}
 	}
 
-	if (-1 == pcap_open_out_linktype(&out, stdout, linktype)) {
+	if (-1 == pcap_open_out_linktype(&out, &fout, linktype)) {
 		perror("writing header");
 		return EX_IOERR;
 	}
@@ -90,7 +99,7 @@ main(int argc, char *argv[])
 	nopen = nfiles;
 	while (nopen) {
 		struct input_file *cur = &files[0];
-		char frame[MAXFRAME];
+		char frame[PCAP_MAXFRAME];
 		size_t len;
 
 		/*
@@ -116,13 +125,13 @@ main(int argc, char *argv[])
 		/*
 		 * Read it 
 		 */
-		len = fread(frame, 1, cur->next.caplen, cur->p.f);
+		len = fread(frame, 1, cur->next.caplen, cur->p->f->f);
 		if (len < cur->next.caplen) {
 			/*
 			 * Short read 
 			 */
 			cur->next.caplen = len;
-			pcap_close(&cur->p);
+			fclose(cur->p->f->f);
 			cur->active = 0;
 		}
 

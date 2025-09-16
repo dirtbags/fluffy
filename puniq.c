@@ -59,7 +59,7 @@ main(int argc, char *argv[])
 			}
 			cur = (1 - cur);
 		}
-		pcap_close(&p);
+		fclose(f);
 
 		i += 1;
 	} while (i < argc);

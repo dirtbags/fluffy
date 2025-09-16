@@ -7,12 +7,14 @@ TARGETS += puniq
 TARGETS += hd 
 TARGETS += pyesc 
 TARGETS += xor 
-TARGETS += unhex
 TARGETS += undec
 TARGETS += unoct
 TARGETS += pcat
 TARGETS += slice
+TARGETS += unhex
 TARGETS += hex
+TARGETS += bin
+TARGETS += unbin
 TARGETS += entropy
 TARGETS += freq
 TARGETS += histogram
@@ -29,18 +31,18 @@ install: $(TARGETS) $(SCRIPTS)
 	install $(SCRIPTS) $(DESTDIR)$(PREFIX)/bin
 
 uninstall:
-	cd $(PREFIX)/bin && rm -f $(TARGETS) $(SCRIPTS)
+	cd $(DESTDIR)$(PREFIX)/bin && rm -f $(TARGETS) $(SCRIPTS)
 
 test: $(TARGETS) test.sh
 	./test.sh
 
-pmerge: pmerge.o pcap.o
+pmerge: pmerge.o pcap.o binio.o
 
-puniq: puniq.o pcap.o
+puniq: puniq.o pcap.o binio.o
 
-p4split: p4split.o pcap.o
+p4split: p4split.o pcap.o binio.o
 
-pcat: pcat.o pcap.o stream.o
+pcat: pcat.o pcap.o binio.o
 pcat.o: CFLAGS += -Wno-unused-variable
 
 entropy: LDLIBS += -lm

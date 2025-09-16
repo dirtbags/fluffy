@@ -87,6 +87,40 @@ read_uint16(struct stream *s)
 }
 
 
+int16_t
+read_int16be(struct stream *s)
+{
+	uint8_t *d = (uint8_t *) s->buf;
+
+	if (!sskip(s, 2)) {
+		return 0;
+	}
+	return ((d[0] << 8) | (d[1] << 0));
+}
+
+
+int16_t
+read_int16le(struct stream *s)
+{
+	uint8_t *d = (uint8_t *) s->buf;
+
+	if (!sskip(s, 2)) {
+		return 0;
+	}
+	return ((d[0] << 0) | (d[1] << 8));
+}
+
+int16_t 
+read_int16(struct stream *s)
+{
+	if (s->endian == ENDIAN_BIG) {
+		return read_int16be(s);
+	} else {
+		return read_int16le(s);
+	}
+}
+
+
 uint32_t
 read_uint32be(struct stream *s)
 {
@@ -114,5 +148,36 @@ read_uint32(struct stream *s)
 		return read_uint32be(s);
 	} else {
 		return read_uint32le(s);
+	}
+}
+
+
+int32_t
+read_int32be(struct stream *s)
+{
+	uint8_t *d = (uint8_t *) s->buf;
+	if (!sskip(s, 4)) {
+		return 0;
+	}
+	return ((d[0] << 24) | (d[1] << 16) | (d[2] << 8) | (d[3] << 0));
+}
+
+int32_t
+read_int32le(struct stream *s)
+{
+	uint8_t *d = (uint8_t *) s->buf;
+	if (!sskip(s, 4)) {
+		return 0;
+	}
+	return ((d[0] << 0) | (d[1] << 8) | (d[2] << 16) | (d[3] << 24));
+}
+
+int32_t
+read_int32(struct stream *s)
+{
+	if (s->endian == ENDIAN_BIG) {
+		return read_int32be(s);
+	} else {
+		return read_int32le(s);
 	}
 }
